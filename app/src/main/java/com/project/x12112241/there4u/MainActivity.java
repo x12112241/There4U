@@ -30,18 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText mNameField;
     private EditText mEmailField;
 
-    public void init() {
-        NextActivity = (Button) findViewById(R.id.nextActivity);
-        NextActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent next = new Intent(MainActivity.this,ReturnActivity.class);
-                startActivity(next);
-            }
-        });
 
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

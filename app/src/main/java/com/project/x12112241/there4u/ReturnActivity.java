@@ -1,11 +1,13 @@
 package com.project.x12112241.there4u;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +21,7 @@ public class ReturnActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private TextView mNameView;
+    private Button MapView;
 
 
     @Override
@@ -28,6 +31,16 @@ public class ReturnActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Name");
         mNameView = (TextView) findViewById(R.id.name_view);
+
+
+        MapView = (Button) findViewById(R.id.map_button);
+        MapView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent maps = new Intent(ReturnActivity.this,MapsActivity.class);
+                startActivity(maps);
+            }
+        });
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
