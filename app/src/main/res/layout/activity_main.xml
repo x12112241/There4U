@@ -33,7 +33,7 @@
             android:layout_below="@+id/name_field"
             android:layout_gravity="top|center_horizontal"
             android:layout_marginTop="154dp"
-            android:text="Click To Store" />
+            android:text="Click To Sign Up" />
 
         <EditText
             android:id="@+id/name_field"
@@ -60,6 +60,14 @@
             android:ems="10"
             android:hint="Enter Your Email"
             android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/nextActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

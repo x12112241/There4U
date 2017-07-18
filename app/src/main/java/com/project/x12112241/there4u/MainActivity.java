@@ -1,5 +1,6 @@
 package com.project.x12112241.there4u;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -22,11 +23,24 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     private Button mFirebaseBtn;
+    public Button NextActivity;
 
     private DatabaseReference mDatabase;
 
     private EditText mNameField;
     private EditText mEmailField;
+
+    public void init() {
+        NextActivity = (Button) findViewById(R.id.nextActivity);
+        NextActivity.setOnClickListener(new View.OnClickListener(){
+
+                    public void onClick(View v){
+
+                Intent next = new Intent(MainActivity.this,ReturnActivity.class);
+                startActivity(next);
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +56,11 @@ public class MainActivity extends AppCompatActivity {
         mNameField = (EditText) findViewById(R.id.name_field);
         mEmailField = (EditText) findViewById(R.id.email_field);
 
+       // NextActivity.setOnClickListener(new View.OnClickListener() {
 
+
+
+                //onNewIntent(getApplicationContext(),ReturnActivity.class););
         mFirebaseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
