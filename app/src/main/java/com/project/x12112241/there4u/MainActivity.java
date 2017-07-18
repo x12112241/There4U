@@ -23,7 +23,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     private Button mFirebaseBtn;
-    public Button NextActivity;
+    private Button NextActivity;
 
     private DatabaseReference mDatabase;
 
@@ -32,14 +32,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void init() {
         NextActivity = (Button) findViewById(R.id.nextActivity);
-        NextActivity.setOnClickListener(new View.OnClickListener(){
-
-                    public void onClick(View v){
-
+        NextActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent next = new Intent(MainActivity.this,ReturnActivity.class);
                 startActivity(next);
             }
         });
+
+
     }
 
     @Override
@@ -57,6 +58,17 @@ public class MainActivity extends AppCompatActivity {
         mEmailField = (EditText) findViewById(R.id.email_field);
 
        // NextActivity.setOnClickListener(new View.OnClickListener() {
+
+
+            NextActivity = (Button) findViewById(R.id.nextActivity);
+            NextActivity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent next = new Intent(MainActivity.this,ReturnActivity.class);
+                    startActivity(next);
+                }
+            });
+
 
 
 
