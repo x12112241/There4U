@@ -12,20 +12,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     private Button mFirebaseBtn;
     private Button NextActivity;
+    private Button mUploadImage;
+
+    private static final int GALLERY_INTENT = 2;
 
     private DatabaseReference mDatabase;
+    private StorageReference mStorageRef;
 
     private EditText mNameField;
     private EditText mEmailField;
@@ -41,8 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
         mFirebaseBtn = (Button) findViewById(R.id.firebase_btn);
 
+
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         mNameField = (EditText) findViewById(R.id.name_field);
         mEmailField = (EditText) findViewById(R.id.email_field);
 
@@ -57,6 +67,22 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(next);
                 }
             });
+        mUploadImage = (Button) findViewById(R.id.image_upload);
+
+        mUploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent image = new Intent(Intent.ACTION_PICK);
+                image.setType("image/*");
+                startActivityForResult(image, GALLERY_INTENT);
+               // startActivityForResult(image, GALLERY_INTENT);
+
+
+            }
+        });
+
+
 
 
 
@@ -97,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-                                        }
+    }
 
 
 

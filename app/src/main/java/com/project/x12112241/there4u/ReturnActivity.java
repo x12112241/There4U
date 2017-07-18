@@ -22,6 +22,7 @@ public class ReturnActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private TextView mNameView;
     private Button MapView;
+    private Button Backbtn;
 
 
     @Override
@@ -39,6 +40,15 @@ public class ReturnActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent maps = new Intent(ReturnActivity.this,MapsActivity.class);
                 startActivity(maps);
+            }
+        });
+
+        Backbtn = (Button) findViewById(R.id.back_btn);
+        Backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent back = new Intent(ReturnActivity.this,MainActivity.class);
+                startActivity(back);
             }
         });
 

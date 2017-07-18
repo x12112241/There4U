@@ -39,5 +39,14 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="75dp"
             android:text="Firebase Child Above" />
+
+        <Button
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/map_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:text="Back" />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
