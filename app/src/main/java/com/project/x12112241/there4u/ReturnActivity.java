@@ -15,11 +15,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
 public class ReturnActivity extends AppCompatActivity {
 
 
     private DatabaseReference mDatabase;
+    private StorageReference mStorageRef;
     private TextView mNameView;
     private Button MapView;
     private Button Backbtn;
@@ -60,6 +62,7 @@ public class ReturnActivity extends AppCompatActivity {
 
                 mNameView.setText("Name : " + name);
             }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {

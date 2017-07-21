@@ -1,6 +1,7 @@
 package com.project.x12112241.there4u;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -16,11 +17,13 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 
@@ -53,6 +56,26 @@ public class MainActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference storageRef = mStorageRef.child("images");
+        StorageReference mountainsRef = storageRef.child("mountains.jpg");
+        StorageReference mountainImagesRef = storageRef.child("images/mountains.jpg");
+
+        mountainsRef.getName().equals(mountainImagesRef.getName());    // true
+        mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
+
+        //storageRef = mStorageRef.child("images");
+
+
+        StorageReference nullRef = storageRef.getRoot().getParent();
+
+
+
+
+
+
+
+
+
         mNameField = (EditText) findViewById(R.id.name_field);
         mEmailField = (EditText) findViewById(R.id.email_field);
 
@@ -76,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent image = new Intent(Intent.ACTION_PICK);
                 image.setType("image/*");
                 startActivityForResult(image, GALLERY_INTENT);
+
                // startActivityForResult(image, GALLERY_INTENT);
 
 
@@ -125,7 +149,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri uri = null;
+        if(requestCode == GALLERY_INTENT && resultCode == RESULT_OK){
+            uri = data.getData();
 
+            StorageReference filePath = mStorageRef.child("Photos").child(uri.getLastPathSegment());
+
+            filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    Toast.makeText(MainActivity.this, "Upload Done" , Toast.LENGTH_LONG).show();
+
+                }
+            });
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
