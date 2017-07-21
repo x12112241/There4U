@@ -1,5 +1,6 @@
 package com.project.x12112241.there4u;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,9 +15,11 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
@@ -34,9 +38,11 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int GALLERY_INTENT = 2;
 
+    private ProgressDialog mProgressDialog;
+
     private DatabaseReference mDatabase;
     private StorageReference mStorageRef;
-
+    private ImageView mImageView;
     private EditText mNameField;
     private EditText mEmailField;
 
@@ -50,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mFirebaseBtn = (Button) findViewById(R.id.firebase_btn);
+
+        mProgressDialog = new ProgressDialog(this);
 
 
 
@@ -91,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         mUploadImage = (Button) findViewById(R.id.image_upload);
-
+        mImageView = (ImageView) findViewById(R.id.imageView);
         mUploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Uri uri = null;
         if(requestCode == GALLERY_INTENT && resultCode == RESULT_OK){
+            mProgressDialog.setMessage("Uploading....");
+            mProgressDialog.show();
             uri = data.getData();
 
             StorageReference filePath = mStorageRef.child("Photos").child(uri.getLastPathSegment());
@@ -163,6 +173,16 @@ public class MainActivity extends AppCompatActivity {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                     Toast.makeText(MainActivity.this, "Upload Done" , Toast.LENGTH_LONG).show();
+                    mProgressDialog.dismiss();
+
+                    Uri downloadUri = taskSnapshot.getDownloadUrl();
+
+                    Picasso.with(MainActivity.this).load(downloadUri).fit().centerCrop().into(mImageView);
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 
                 }
             });
