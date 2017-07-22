@@ -65,11 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         StorageReference storageRef = mStorageRef.child("images");
-        StorageReference mountainsRef = storageRef.child("mountains.jpg");
-        StorageReference mountainImagesRef = storageRef.child("images/mountains.jpg");
+       // StorageReference mountainsRef = storageRef.child("mountains.jpg");
+        //StorageReference mountainImagesRef = storageRef.child("images/mountains.jpg");
 
-        mountainsRef.getName().equals(mountainImagesRef.getName());    // true
-        mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
+        //mountainsRef.getName().equals(mountainImagesRef.getName());    // true
+        //mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
 
         //storageRef = mStorageRef.child("images");
 

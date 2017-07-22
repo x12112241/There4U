@@ -48,5 +48,26 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:text="Back" />
+
+        <Button
+            android:id="@+id/app_Invite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/back_btn"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/back_btn"
+            android:layout_marginBottom="22dp"
+            android:text="App invite" />
+
+        <TextView
+            android:id="@+id/txtDynamicLinkResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/name_view"
+            android:layout_alignStart="@+id/name_view"
+            android:layout_below="@+id/textView"
+            android:layout_marginTop="34dp"
+            android:hint="Dynamic Link Shown" />
+
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
