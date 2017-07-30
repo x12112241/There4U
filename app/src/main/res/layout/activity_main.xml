@@ -5,95 +5,101 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="com.project.x12112241.there4u.MainActivity">
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
+    android:background="@android:color/white"
+    android:elevation="1dp"
+    android:paddingBottom="20dp"
+    android:paddingEnd="20dp"
+    android:paddingStart="20dp"
+    android:paddingTop="20dp"
+    tools:context="com.project.x12112241.there4u.LoginActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
         <Button
             android:id="@+id/firebase_btn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
-            android:layout_marginTop="13dp"
-            android:text="Click To Sign Up"
-            android:layout_below="@+id/email_field"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <EditText
-            android:id="@+id/name_field"
-            android:layout_width="match_parent"
-            android:layout_height="66dp"
+            android:layout_above="@+id/email_field"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="62dp"
-            android:ems="10"
-            android:hint="Enter Your Name"
-            android:inputType="textPersonName" />
+            android:layout_gravity="top|center_horizontal"
+            android:background="@android:color/holo_blue_light"
+            android:text="Click To Sign Up" />
 
         <EditText
             android:id="@+id/email_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/password_txt"
             android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/name_field"
-            android:layout_marginTop="11dp"
             android:ems="10"
             android:hint="Enter Your Email"
-            android:inputType="textPersonName" />
+            android:inputType="textEmailAddress"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/password_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/nextActivity"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="69dp"
+            android:ems="10"
+            android:hint="Enter Your Password"
+            android:inputType="textPassword"
+            android:textAlignment="center" />
 
         <Button
             android:id="@+id/nextActivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/google_Btn"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
+            android:layout_alignRight="@+id/google_Btn"
+            android:background="@android:color/holo_blue_light"
             android:text="Go to Next" />
 
         <Button
             android:id="@+id/image_upload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upload Image"
-            android:layout_above="@+id/nextActivity"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:background="@android:color/holo_blue_light"
+            android:text="Upload Image" />
 
-        <ImageView
-            android:id="@+id/imageView"
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_Btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/common_full_open_on_phone"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
-            android:layout_above="@+id/image_upload"
-            android:layout_below="@+id/firebase_btn" />
+            android:layout_alignParentTop="true"
+            android:textAlignment="center"></com.google.android.gms.common.SignInButton>
+
+        <Button
+            android:id="@+id/register_Btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/email_field"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/holo_blue_light"
+            android:text="Register" />
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

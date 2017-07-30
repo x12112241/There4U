@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.appinvite.FirebaseAppInvite;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,7 +26,7 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.storage.StorageReference;
 
-public class ReturnActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
 
     private DatabaseReference mDatabase;
@@ -34,14 +35,24 @@ public class ReturnActivity extends AppCompatActivity {
     private Button MapView;
     private Button Backbtn;
     private Button InviteBtn;
+    private Button userInfo;
     private DynamicLink dynamicLink;
     private TextView txtResult;
     private FirebaseAnalytics analytics;
     private final String TAG = getClass().getName();
     private static final int REQUEST_INVITE = 0;
+    private Button button;
+    FirebaseAuth mAuth;
+    FirebaseAuth.AuthStateListener mAuthListener;
+
 
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_return);
@@ -53,7 +64,7 @@ public class ReturnActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
                         if (pendingDynamicLinkData != null) {
-                            analytics = FirebaseAnalytics.getInstance(ReturnActivity.this);
+                            analytics = FirebaseAnalytics.getInstance(HomeActivity.this);
 
                             Uri deeplink = pendingDynamicLinkData.getLink();
                             txtResult.append("\nonSuccess called " + deeplink.toString());
@@ -85,7 +96,7 @@ public class ReturnActivity extends AppCompatActivity {
         MapView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent maps = new Intent(ReturnActivity.this, MapsActivity.class);
+                Intent maps = new Intent(HomeActivity.this, MapsActivity.class);
                 startActivity(maps);
             }
         });
@@ -94,8 +105,38 @@ public class ReturnActivity extends AppCompatActivity {
         Backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent back = new Intent(ReturnActivity.this, AppInviteActivity.class);
+                Intent back = new Intent(HomeActivity.this, AppInviteActivity.class);
                 startActivity(back);
+            }
+        });
+
+        userInfo = (Button) findViewById(R.id.user_Info);
+        userInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent back = new Intent(HomeActivity.this, UserInfoActivity.class);
+                startActivity(back);
+            }
+        });
+
+        button = (Button) findViewById(R.id.logout_Btn);
+        mAuth = FirebaseAuth.getInstance();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() == null) {
+                    startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                }
+
+            }
+        };
+
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
             }
         });
 
@@ -131,7 +172,7 @@ public class ReturnActivity extends AppCompatActivity {
 
                 String name = dataSnapshot.getValue().toString();
 
-                mNameView.setText("Name : " + name);
+                // mNameView.setText("Name : " + name);
             }
 
 

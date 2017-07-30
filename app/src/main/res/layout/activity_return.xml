@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.project.x12112241.there4u.ReturnActivity">
+    tools:context="com.project.x12112241.there4u.HomeActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -44,20 +44,22 @@
             android:id="@+id/return_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/map_button"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:text="Back" />
+            android:layout_alignBaseline="@+id/invite_button"
+            android:layout_alignBottom="@+id/invite_button"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_toLeftOf="@+id/invite_button"
+            android:layout_toStartOf="@+id/invite_button"
+            android:text="Share" />
 
         <Button
             android:id="@+id/invite_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/return_btn"
             android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/return_btn"
-            android:layout_marginBottom="22dp"
-            android:text="App invite" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="25dp"
+            android:text="Invite To App" />
 
         <TextView
             android:id="@+id/txtDynamicLinkResult"
@@ -68,6 +70,25 @@
             android:layout_below="@+id/textView"
             android:layout_marginTop="34dp"
             android:hint="Dynamic Link Shown" />
+
+        <Button
+            android:id="@+id/logout_Btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:id="@+id/user_Info"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/invite_button"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="Edit Profile" />
 
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -26,7 +26,7 @@ public class AppInviteActivity extends AppCompatActivity implements
         View.OnClickListener {
 
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int REQUEST_INVITE = 0;
 
     @Override

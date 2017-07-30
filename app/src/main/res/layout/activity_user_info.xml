@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    tools:context="com.project.x12112241.there4u.UserInfoActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update User Info"
+        android:textSize="30sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:id="@+id/textView" />
+
+
+    <TextView
+        android:text="Name: "
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="74dp"
+        android:layout_marginTop="83dp"
+        android:gravity="bottom"
+        android:id="@+id/textName"
+        android:layout_marginLeft="74dp" />
+
+    <TextView
+        android:text="Email: "
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/textName"
+        android:layout_alignEnd="@+id/textName"
+        android:gravity="bottom"
+        android:id="@+id/textEmail"
+        android:layout_alignRight="@+id/textName" />
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@+id/textEmail"
+        android:gravity="bottom"
+        android:textAlignment="center"
+        android:layout_below="@+id/textName"
+        android:inputType="text" />
+
+    <TextView
+        android:text="Phone #:"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="bottom"
+        android:id="@+id/textPhone"
+        android:layout_below="@+id/textEmail"
+        android:layout_toLeftOf="@+id/etEmail"
+        android:layout_toStartOf="@+id/etEmail" />
+
+    <TextView
+        android:text="Company #:"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="bottom"
+        android:id="@+id/textCompany"
+        android:layout_below="@+id/textPhone"
+        android:layout_toLeftOf="@+id/etPhone"
+        android:layout_toStartOf="@+id/etPhone" />
+
+    <EditText
+        android:id="@+id/etPhone"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@+id/textPhone"
+        android:gravity="bottom"
+        android:textAlignment="center"
+        android:layout_below="@+id/textEmail" />
+
+    <EditText
+        android:id="@+id/etCompany"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@+id/textCompany"
+        android:gravity="bottom"
+        android:textAlignment="center"
+        android:layout_below="@+id/textPhone" />
+
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:gravity="bottom"
+        android:textAlignment="center"
+        android:layout_marginTop="83dp"
+        android:layout_toRightOf="@+id/textName" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_below="@+id/textCompany"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
