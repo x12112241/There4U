@@ -14,10 +14,10 @@
     <string name="invitation_id_default">Invitation ID not set</string>
     <string name="invite_friends">Invite Friends</string>
 
-    <string name="invitation_title">Send App Invite Quickstart Invitation</string>
-    <string name="invitation_message">This app is terrific, give it a try and get $5 off!</string>
-    <string name="invitation_deep_link">http://example.com/offer/five_dollar_offer</string>
-    <string name="invitation_custom_image">https://developers.google.com/identity/images/g-logo.png</string>
+    <string name="invitation_title">Join the There4U family today</string>
+    <string name="invitation_message">There4U is the app you can depend on</string>
+    <string name="invitation_deep_link">https://quw5p.app.goo.gl/Scq6r</string>
+    <string name="invitation_custom_image">https://cdn.discordapp.com/attachments/293759137123270656/341412472990728192/There4U_High.png</string>
     <string name="invitation_cta">Install!</string>
 
     <string name="deep_link_fmt" formatted="false">Deep Link: %s</string>
@@ -96,5 +96,18 @@
     <string name="title_activity_useri_info">User Profile</string>
     <string name="dummy_button">Edit Profile</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="click_to_sign_up">Click To Sign Up</string>
+    <string name="enter_your_email">Enter Your Email</string>
+    <string name="enter_your_password">Enter Your Password</string>
+    <string name="go_to_next">Go to Next</string>
+    <string name="register">Register</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="name">Name:</string>
+    <string name="update_user_info">Update User Info</string>
+    <string name="email">Email:</string>
+    <string name="submit">Submit</string>
+    <string name="phone">Phone #:</string>
+    <string name="company">Company :</string>
+    <string name="user_info">User Info</string>
 
 </resources>

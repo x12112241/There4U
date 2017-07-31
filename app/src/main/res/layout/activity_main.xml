@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
     android:background="@android:color/white"
-    android:elevation="1dp"
+
     android:paddingBottom="20dp"
     android:paddingEnd="20dp"
     android:paddingStart="20dp"
@@ -27,7 +27,7 @@
             android:layout_alignParentStart="true"
             android:layout_gravity="top|center_horizontal"
             android:background="@android:color/holo_blue_light"
-            android:text="Click To Sign Up" />
+            android:text="@string/click_to_sign_up" />
 
         <EditText
             android:id="@+id/email_field"
@@ -39,7 +39,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:ems="10"
-            android:hint="Enter Your Email"
+            android:hint="@string/enter_your_email"
             android:inputType="textEmailAddress"
             android:textAlignment="center" />
 
@@ -54,7 +54,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginBottom="69dp"
             android:ems="10"
-            android:hint="Enter Your Password"
+            android:hint="@string/enter_your_password"
             android:inputType="textPassword"
             android:textAlignment="center" />
 
@@ -68,7 +68,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignRight="@+id/google_Btn"
             android:background="@android:color/holo_blue_light"
-            android:text="Go to Next" />
+            android:text="@string/go_to_next" />
 
         <Button
             android:id="@+id/image_upload"
@@ -78,7 +78,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:background="@android:color/holo_blue_light"
-            android:text="Upload Image" />
+            android:text="@string/upload_image" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/google_Btn"
@@ -89,7 +89,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:textAlignment="center"></com.google.android.gms.common.SignInButton>
+            android:textAlignment="center" />
 
         <Button
             android:id="@+id/register_Btn"
@@ -99,7 +99,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:background="@android:color/holo_blue_light"
-            android:text="Register" />
+            android:text="@string/register" />
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

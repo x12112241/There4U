@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.credentials.IdToken;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -61,11 +62,10 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mEmailField;
     private EditText mPasswordField;
     private FirebaseAuth mAuth;
+    private String userID;
 
 
-//    private void updateUI(FirebaseUser currentUser) {
-//        return;
-//    }
+
 
 
     @Override
@@ -84,22 +84,47 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
+        mAuth = FirebaseAuth.getInstance();
         mFirebaseBtn = (Button) findViewById(R.id.firebase_btn);
         Register = (Button) findViewById(R.id.register_Btn);
         mProgressDialog = new ProgressDialog(this);
+        //FirebaseUser user = mAuth.getCurrentUser();
+        //userID = user.getUid();
 
         googleButton = (SignInButton) findViewById(R.id.google_Btn);
+
+
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int i = v.getId();
                 if (i == R.id.register_Btn) {
                     createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
+
+
+                    mDatabase.child("users").child(userID).child("name").setValue(" ");
+
+
+//                    mDatabase.child("user").child(userID).child("name").setValue("Ben121").addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//
+//                            if (task.isSuccessful()) {
+//
+//                                Toast.makeText(LoginActivity.this, "Info Stored..", Toast.LENGTH_LONG).show();
+//
+//                            } else {
+//
+//                                Toast.makeText(LoginActivity.this, "Error...", Toast.LENGTH_LONG).show();
+//
+//                            }
+//                        }
+//                    });
                 }
             }
         });
 
-        mAuth = FirebaseAuth.getInstance();
+
         googleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +132,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+//        mAuth = FirebaseAuth.getInstance();
+//        FirebaseUser user = mAuth.getCurrentUser();
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         StorageReference storageRef = mStorageRef.child("images");
@@ -157,25 +184,18 @@ public class LoginActivity extends AppCompatActivity {
         });
         mUploadImage = (Button) findViewById(R.id.image_upload);
         mImageView = (ImageView) findViewById(R.id.imageView);
-        mUploadImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent image = new Intent(Intent.ACTION_PICK);
-                image.setType("image/*");
-                startActivityForResult(image, GALLERY_INTENT);
-
-                // startActivityForResult(image, GALLERY_INTENT);
 
 
-            }
-        });
-
-
-        //onNewIntent(getApplicationContext(),HomeActivity.class););
+        // onNewIntent(getApplicationContext(),HomeActivity.class););
         mFirebaseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                int i = v.getId();
+                if (i == R.id.firebase_btn) {
+                    createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
+
+
 
 
                 //1 - Create Child in root object
@@ -183,19 +203,20 @@ public class LoginActivity extends AppCompatActivity {
 
                 //mDatabase.child("Name").setValue("Ben Callaghan");
 
-                String name = mNameField.getText().toString().trim();
-                String email = mEmailField.getText().toString().trim();
 
-                HashMap<String, String> dataMap = new HashMap<String, String>();
-                dataMap.put("Name", name);
+                String email = mEmailField.getText().toString().trim();
+                    String password = mPasswordField.getText().toString().trim();
+                    final HashMap<String, String> dataMap = new HashMap<String, String>();
+                    dataMap.put("Password", password);
                 dataMap.put("Email", email);
+
 
                 mDatabase.push().setValue(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
                         if (task.isSuccessful()) {
-
+                            mDatabase.child("name").setValue("Ben11");
                             Toast.makeText(LoginActivity.this, "Info Stored..", Toast.LENGTH_LONG).show();
 
                         } else {
@@ -204,10 +225,61 @@ public class LoginActivity extends AppCompatActivity {
 
                         }
                     }
+
                 });
+
+                }
             }
+
         });
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Uri uri = null;
+        if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
+            mProgressDialog.setMessage("Uploading....");
+            mProgressDialog.show();
+            uri = data.getData();
+
+            StorageReference filePath = mStorageRef.child("Photos").child(uri.getLastPathSegment());
+
+            filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    Toast.makeText(LoginActivity.this, "Upload Done", Toast.LENGTH_LONG).show();
+                    mProgressDialog.dismiss();
+
+                    Uri downloadUri = taskSnapshot.getDownloadUrl();
+
+                    Picasso.with(LoginActivity.this).load(downloadUri).fit().centerCrop().into(mImageView);
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+        }
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = result.getSignInAccount();
+                firebaseAuthWithGoogle(account);
+            } else {
+                Toast.makeText(LoginActivity.this, "Authentication went wrong...", Toast.LENGTH_SHORT).show();
+                // Google Sign In failed, update UI appropriately
+                // ...
+            }
+        }
     }
 
 //    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -256,7 +328,6 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.addAuthStateListener(mAuthListener);
 
     }
-
     private void createAccount(String email, String password) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
@@ -318,6 +389,7 @@ public class LoginActivity extends AppCompatActivity {
 
             Log.d("TAG", "signInWithCredential:success");
             mAuth.addAuthStateListener(mAuthListener);
+            mAuth.getCurrentUser();
         } else {
             Toast.makeText(LoginActivity.this, "Not Logged In...", Toast.LENGTH_SHORT).show();
         }
@@ -352,52 +424,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        Uri uri = null;
-        if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
-            mProgressDialog.setMessage("Uploading....");
-            mProgressDialog.show();
-            uri = data.getData();
-
-            StorageReference filePath = mStorageRef.child("Photos").child(uri.getLastPathSegment());
-
-            filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    Toast.makeText(LoginActivity.this, "Upload Done", Toast.LENGTH_LONG).show();
-                    mProgressDialog.dismiss();
-
-                    Uri downloadUri = taskSnapshot.getDownloadUrl();
-
-                    Picasso.with(LoginActivity.this).load(downloadUri).fit().centerCrop().into(mImageView);
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-
-                }
-            });
-        }
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
-            } else {
-                Toast.makeText(LoginActivity.this, "Authentication went wrong...", Toast.LENGTH_SHORT).show();
-                // Google Sign In failed, update UI appropriately
-                // ...
-            }
-        }
-    }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
 
@@ -410,13 +437,13 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            // updateUI(user);
+                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
+                            updateUI(null);
                         }
 
                         // ...

@@ -1,14 +1,18 @@
 package com.project.x12112241.there4u;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -16,6 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.appinvite.FirebaseAppInvite;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +30,8 @@ import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -42,9 +49,16 @@ public class HomeActivity extends AppCompatActivity {
     private final String TAG = getClass().getName();
     private static final int REQUEST_INVITE = 0;
     private Button button;
-    FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener mAuthListener;
+    public boolean toasted = false;
 
+    private String userID;
+
+
+    //add Firebase Database stuff
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference myRef;
 
 
     @Override
@@ -56,6 +70,29 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_return);
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
+        FirebaseUser user = mAuth.getCurrentUser();
+        userID = user.getUid();
+
+
+//        mAuthListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                FirebaseUser user = firebaseAuth.getCurrentUser();
+//                if (user != null) {
+//                    // User is signed in
+//                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+//                    toastMessage("Successfully signed in with: " + user.getEmail());
+//                } else {
+//                    // User is signed out
+//                    Log.d(TAG, "onAuthStateChanged:signed_out");
+//                    toastMessage("Successfully signed out.");
+//                }
+//                // ...
+//            }
+//        };
 
         txtResult = (TextView) findViewById(R.id.txtDynamicLinkResult);
         FirebaseDynamicLinks.getInstance()
@@ -88,7 +125,7 @@ public class HomeActivity extends AppCompatActivity {
                 });
 
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Name");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("name");
         mNameView = (TextView) findViewById(R.id.name_view);
 
 
@@ -125,6 +162,14 @@ public class HomeActivity extends AppCompatActivity {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+
+                    //toastMessage("Successfully signed in with: " + user.getEmail());
+                }
                 if (firebaseAuth.getCurrentUser() == null) {
                     startActivity(new Intent(HomeActivity.this, LoginActivity.class));
                 }
@@ -143,14 +188,13 @@ public class HomeActivity extends AppCompatActivity {
 
         InviteBtn = (Button) findViewById(R.id.invite_button);
         //InviteBtn.setOnClickListener(new View.OnClickListener() {
-          //  @Override
-          //  public void onClick(View v) {
-          //      shareDynamicLink(v);
+        //  @Override
+        //  public void onClick(View v) {
+        //      shareDynamicLink(v);
 
 
-
-          //  }
-      //  });
+        //  }
+        //  });
         InviteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,17 +206,39 @@ public class HomeActivity extends AppCompatActivity {
                         .build();
                 startActivityForResult(intent, REQUEST_INVITE);
             }
-      });
-
-
+        });
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                showData(dataSnapshot);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Failed to read value
+//                Log.w(TAG, "Failed to read value.", error.toException());
+//            }
+//        });
+//
+//    }
 
         mDatabase.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                if (dataSnapshot == null) {
+                    mNameView.setText("Name :" + " ");
+                    Toast.makeText(HomeActivity.this, "Name is empty", Toast.LENGTH_LONG).show();
+                }
+                UserInformation uInfo = new UserInformation();
                 String name = dataSnapshot.getValue().toString();
+                if (name != null) {
+                    mNameView.setText("Name : " + name);
+                }
 
-                // mNameView.setText("Name : " + name);
+
             }
 
 
@@ -184,6 +250,22 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
+
+//    private void showData(DataSnapshot dataSnapshot) {
+//        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//            UserInformation uInfo = new UserInformation();
+//            uInfo.setName(ds.child(userID).getValue(UserInformation.class).getName()); //set the name
+//            String name = ds.getValue().toString();
+//            //display all the information
+//            Log.d(TAG, "showData: name: " + uInfo.getName());
+//            mNameView.setText("Name :" + name);
+//            ArrayList<String> array = new ArrayList<>();
+//            array.add(uInfo.getName());
+//
+//
+//        }
+//    }
+
 
     public void shareDynamicLink(View view) {
 
@@ -209,5 +291,7 @@ public class HomeActivity extends AppCompatActivity {
         return "https://quw5p.app.goo.gl/Scq6 " + " " +  /*link*/ " https://github.com/x12112241/There4U " + "apn = " + "com.project.x12112241.there4u" + "&st " + "Share+This+App" + "&sd= " + "The+caring+app. " + "&utm_source= " + "AndroidApp ";
     }
 
-
+    private void toastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 }
