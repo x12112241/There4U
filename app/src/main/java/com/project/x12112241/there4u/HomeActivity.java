@@ -9,8 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,8 +29,6 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
-
 import mehdi.sakout.fancybuttons.FancyButton;
 
 public class HomeActivity extends AppCompatActivity {
@@ -41,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private StorageReference mStorageRef;
     private TextView mNameView;
-    private FancyButton MapView, Backbtn, InviteBtn, userInfo, button;
+    private FancyButton MapView, ShareBtn, ConnectBtn, userInfo, button;
 
     private DynamicLink dynamicLink;
     private TextView txtResult;
@@ -68,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_return);
+        setContentView(R.layout.activity_home);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
@@ -137,8 +133,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        Backbtn = (FancyButton) findViewById(R.id.return_btn);
-        Backbtn.setOnClickListener(new View.OnClickListener() {
+        ShareBtn = (FancyButton) findViewById(R.id.share_btn);
+        ShareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent back = new Intent(HomeActivity.this, AppInviteActivity.class);
@@ -185,8 +181,8 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        InviteBtn = (FancyButton) findViewById(R.id.invite_button);
-        //InviteBtn.setOnClickListener(new View.OnClickListener() {
+        ConnectBtn = (FancyButton) findViewById(R.id.connect_btn);
+        //ConnectBtn.setOnClickListener(new View.OnClickListener() {
         //  @Override
         //  public void onClick(View v) {
         //      shareDynamicLink(v);
@@ -194,16 +190,17 @@ public class HomeActivity extends AppCompatActivity {
 
         //  }
         //  });
-        InviteBtn.setOnClickListener(new View.OnClickListener() {
+        ConnectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
-                        .setMessage(getString(R.string.invitation_message))
-                        .setDeepLink(Uri.parse(getString(R.string.invitation_deep_link)))
-                        .setCustomImage(Uri.parse(getString(R.string.invitation_custom_image)))
-                        .setCallToActionText(getString(R.string.invitation_cta))
-                        .build();
-                startActivityForResult(intent, REQUEST_INVITE);
+                startActivity(new Intent(HomeActivity.this, ConnectionsActivity.class));
+//                Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
+//                        .setMessage(getString(R.string.invitation_message))
+//                        .setDeepLink(Uri.parse(getString(R.string.invitation_deep_link)))
+//                        .setCustomImage(Uri.parse(getString(R.string.invitation_custom_image)))
+//                        .setCallToActionText(getString(R.string.invitation_cta))
+//                        .build();
+//                startActivityForResult(intent, REQUEST_INVITE);
             }
         });
 //        myRef.addValueEventListener(new ValueEventListener() {

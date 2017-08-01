@@ -36,7 +36,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="38dp"
-            android:text="Show Map"
+            android:text="@string/show_map"
             fancy:fb_borderColor="#FFFFFF"
             fancy:fb_borderWidth="1dp"
             fancy:fb_defaultColor="#54afe0"
@@ -46,7 +46,7 @@
 
 
         <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/return_btn"
+            android:id="@+id/share_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/map_button"
@@ -64,7 +64,7 @@
             fancy:fb_radius="20dp" />
 
         <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/invite_button"
+            android:id="@+id/connect_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -73,7 +73,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="15dp"
-            android:text="Invite To App"
+            android:text="Connections"
             fancy:fb_borderColor="#FFFFFF"
             fancy:fb_borderWidth="1dp"
             fancy:fb_defaultColor="#54afe0"
@@ -85,7 +85,7 @@
             android:id="@+id/txtDynamicLinkResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/invite_button"
+            android:layout_above="@+id/connect_btn"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="13dp"
             android:hint="Dynamic Link Shown" />
@@ -111,7 +111,7 @@
             android:id="@+id/user_Info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/invite_button"
+            android:layout_above="@+id/connect_btn"
             android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
@@ -131,8 +131,8 @@
             android:layout_height="245dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            app:srcCompat="@drawable/t4ulogo"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/t4ulogo" />
 
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -35,7 +35,7 @@ public class AppInviteActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_app_invite);
 
         // Invite button click listener
-        findViewById(R.id.invite_button).setOnClickListener(this);
+        findViewById(R.id.connect_btn).setOnClickListener(this);
         // [END_EXCLUDE]
 
 
@@ -132,7 +132,7 @@ public class AppInviteActivity extends AppCompatActivity implements
     @Override
     public void onClick(View view) {
         int i = view.getId();
-        if (i == R.id.invite_button) {
+        if (i == R.id.connect_btn) {
             onInviteClicked();
         }
     }

@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -53,9 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private StorageReference mStorageRef;
     private ImageView mImageView;
-    private EditText mNameField;
-    private EditText mEmailField;
-    private EditText mPasswordField;
+    private EditText mEmailField, mPasswordField;
     private FirebaseAuth mAuth;
     private String userID;
 
@@ -66,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -448,9 +445,9 @@ public class LoginActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_logout) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

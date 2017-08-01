@@ -9,12 +9,12 @@
     android:background="@android:color/white">
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/image_backround"
         android:layout_width="328dp"
         android:layout_height="245dp"
-        app:srcCompat="@drawable/t4ulogo"
         android:layout_alignTop="@+id/textView"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/t4ulogo" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
         android:layout_height="40dp"
         android:layout_marginLeft="50dp"
         android:layout_marginStart="45dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="250dp"
         android:gravity="bottom"
         android:textStyle="bold"
         android:includeFontPadding="false"
@@ -44,12 +44,11 @@
         android:id="@+id/etName"
         android:layout_width="200dp"
         android:layout_height="50dp"
-
         android:elevation="0dp"
         android:gravity="bottom"
         android:inputType="textPersonName"
         android:textAlignment="inherit"
-        android:layout_alignBottom="@+id/imageView5"
+        android:layout_alignTop="@+id/textName"
         android:layout_toRightOf="@+id/textName"
         android:layout_toEndOf="@+id/textName" />
 
@@ -122,6 +121,29 @@
         android:layout_below="@+id/textPhone"
         android:inputType="text" />
 
+    <TextView
+        android:text="Status :"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="bottom"
+        android:id="@+id/StatusText"
+        android:layout_below="@+id/textCompany"
+        android:textStyle="bold"
+        android:layout_toLeftOf="@+id/etCompany"
+        android:layout_toStartOf="@+id/etCompany"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/etStatus"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:elevation="0dp"
+        android:layout_toRightOf="@+id/StatusText"
+        android:gravity="bottom"
+        android:textAlignment="inherit"
+        android:layout_below="@+id/textCompany"
+        android:inputType="text" />
+
 
     <mehdi.sakout.fancybuttons.FancyButton
         android:id="@+id/btnSubmit"
@@ -134,10 +156,10 @@
         fancy:fb_focusColor="#9bd823"
         fancy:fb_iconPosition="left"
         fancy:fb_radius="20dp"
-        android:layout_below="@+id/etCompany"
-        android:layout_marginTop="29dp"
+        android:layout_above="@+id/image_upload"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginBottom="8dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -153,10 +175,10 @@
         fancy:fb_focusColor="#9bd823"
         fancy:fb_iconPosition="left"
         fancy:fb_radius="20dp"
-        android:layout_marginTop="28dp"
-        android:layout_below="@+id/btnSubmit"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginBottom="14dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
