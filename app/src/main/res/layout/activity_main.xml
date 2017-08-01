@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
 
     android:background="@android:color/white"
 
@@ -18,88 +20,94 @@
         android:layout_height="match_parent"
         android:visibility="visible">
 
-        <Button
-            android:id="@+id/firebase_btn"
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/signInbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/email_field"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_gravity="top|center_horizontal"
             android:background="@android:color/holo_blue_light"
-            android:text="@string/click_to_sign_up" />
+            android:text="@string/sign_in"
+            fancy:fb_borderColor="#FFFFFF"
+            fancy:fb_borderWidth="1dp"
+            fancy:fb_defaultColor="#54afe0"
+            fancy:fb_focusColor="#9bd823"
+            fancy:fb_iconPosition="left"
+            fancy:fb_radius="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp" />
 
         <EditText
             android:id="@+id/email_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/password_txt"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"
             android:ems="10"
             android:hint="@string/enter_your_email"
             android:inputType="textEmailAddress"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:layout_below="@+id/google_Btn"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp" />
 
         <EditText
             android:id="@+id/password_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/nextActivity"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="69dp"
             android:ems="10"
             android:hint="@string/enter_your_password"
             android:inputType="textPassword"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/nextActivity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/google_Btn"
-            android:layout_alignParentBottom="true"
+            android:textAlignment="center"
+            android:layout_below="@+id/email_field"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignRight="@+id/google_Btn"
-            android:background="@android:color/holo_blue_light"
-            android:text="@string/go_to_next" />
-
-        <Button
-            android:id="@+id/image_upload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="@android:color/holo_blue_light"
-            android:text="@string/upload_image" />
+            android:layout_alignParentEnd="true" />
+
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/google_Btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/imageView2"
+            android:textAlignment="center"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:textAlignment="center" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
-        <Button
+        <mehdi.sakout.fancybuttons.FancyButton
             android:id="@+id/register_Btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/email_field"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:background="@android:color/holo_blue_light"
-            android:text="@string/register" />
+            android:text="@string/register"
+            fancy:fb_borderColor="#FFFFFF"
+            fancy:fb_borderWidth="1dp"
+            fancy:fb_defaultColor="#54afe0"
+            fancy:fb_focusColor="#9bd823"
+            fancy:fb_iconPosition="left"
+            fancy:fb_radius="20dp"
+            android:layout_above="@+id/signInbtn"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="328dp"
+            android:layout_height="245dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@drawable/t4ulogo"
+            android:layout_marginTop="0dp" />
+
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

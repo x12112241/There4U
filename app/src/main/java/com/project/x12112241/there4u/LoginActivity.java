@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.credentials.IdToken;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -34,19 +33,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.util.HashMap;
+import mehdi.sakout.fancybuttons.FancyButton;
 
 public class LoginActivity extends AppCompatActivity {
-    private Button mFirebaseBtn;
-    private Button NextActivity;
-    private Button mUploadImage;
-    private Button Register;
+    private FancyButton signInbtn, Register;
     SignInButton googleButton;
     GoogleApiClient mGoogleApiClient;
     private final static int RC_SIGN_IN = 1;
@@ -85,8 +80,8 @@ public class LoginActivity extends AppCompatActivity {
         };
 
         mAuth = FirebaseAuth.getInstance();
-        mFirebaseBtn = (Button) findViewById(R.id.firebase_btn);
-        Register = (Button) findViewById(R.id.register_Btn);
+        signInbtn = (FancyButton) findViewById(R.id.signInbtn);
+        Register = (FancyButton) findViewById(R.id.register_Btn);
         mProgressDialog = new ProgressDialog(this);
         //FirebaseUser user = mAuth.getCurrentUser();
         //userID = user.getUid();
@@ -102,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                     createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
 
 
-                    mDatabase.child("users").child(userID).child("name").setValue(" ");
+                    //mDatabase.child("users").child(userID).child("name").setValue("Ben");
 
 
 //                    mDatabase.child("user").child(userID).child("name").setValue("Ben121").addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -154,7 +149,14 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-
+        signInbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v == signInbtn) {
+                    userLogin();
+                }
+            }
+        });
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
@@ -172,68 +174,102 @@ public class LoginActivity extends AppCompatActivity {
 
         // NextActivity.setOnClickListener(new View.OnClickListener() {
 
-        Register = (Button) findViewById(R.id.register_Btn);
+        Register = (FancyButton) findViewById(R.id.register_Btn);
 
-        NextActivity = (Button) findViewById(R.id.nextActivity);
-        NextActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent next = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(next);
-            }
-        });
-        mUploadImage = (Button) findViewById(R.id.image_upload);
+//        NextActivity = (Button) findViewById(R.id.nextActivity);
+//        NextActivity.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent next = new Intent(LoginActivity.this, HomeActivity.class);
+//                startActivity(next);
+//            }
+//        });
+        // mUploadImage = (FancyButton) findViewById(R.id.image_upload);
         mImageView = (ImageView) findViewById(R.id.imageView);
+    }
 
 
-        // onNewIntent(getApplicationContext(),HomeActivity.class););
-        mFirebaseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        // onNewIntent(getApplicationContext(),HomeActivity.class););
+//        signInbtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                int i = v.getId();
+//                if (i == R.id.firebase_btn) {
+//                    createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
+//
+//
+//
+//
+//                //1 - Create Child in root object
+//                //2 - Assign some value to the child object
+//
+//                //mDatabase.child("Name").setValue("Ben Callaghan");
+//
+//
+//                String email = mEmailField.getText().toString().trim();
+//                    String password = mPasswordField.getText().toString().trim();
+//                    final HashMap<String, String> dataMap = new HashMap<String, String>();
+//                    dataMap.put("Password", password);
+//                dataMap.put("Email", email);
+//
+//
+////                mDatabase.push().setValue(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+////                    @Override
+////                    public void onComplete(@NonNull Task<Void> task) {
+////
+////                        if (task.isSuccessful()) {
+////                            mDatabase.child("name").setValue("Ben11");
+////                            Toast.makeText(LoginActivity.this, "Info Stored..", Toast.LENGTH_LONG).show();
+////
+////                        } else {
+////
+////                            Toast.makeText(LoginActivity.this, "Error...", Toast.LENGTH_LONG).show();
+////
+////                        }
+////                    }
+////
+////                });
+//
+//                }
+//            }
+//
+//        });
 
-                int i = v.getId();
-                if (i == R.id.firebase_btn) {
-                    createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
+
+//        public void onClick (View v){
+//        if (v == signInbtn) {
+//            userLogin();
+//        }
+//    }
 
 
-
-
-                //1 - Create Child in root object
-                //2 - Assign some value to the child object
-
-                //mDatabase.child("Name").setValue("Ben Callaghan");
-
-
-                String email = mEmailField.getText().toString().trim();
-                    String password = mPasswordField.getText().toString().trim();
-                    final HashMap<String, String> dataMap = new HashMap<String, String>();
-                    dataMap.put("Password", password);
-                dataMap.put("Email", email);
-
-
-                mDatabase.push().setValue(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+    private void userLogin() {
+        String email = mEmailField.getText().toString().trim();
+        String password = mPasswordField.getText().toString().trim();
+        if (!validateForm()) {
+            return;
+        }
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
+                    public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            mDatabase.child("name").setValue("Ben11");
-                            Toast.makeText(LoginActivity.this, "Info Stored..", Toast.LENGTH_LONG).show();
-
+                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         } else {
-
-                            Toast.makeText(LoginActivity.this, "Error...", Toast.LENGTH_LONG).show();
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "logInWithEmail:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
 
                         }
-                    }
 
                 });
-
-                }
-            }
-
-        });
-
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -281,6 +317,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
+
 
 //    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 //            .requestIdToken(getString(R.string.default_web_client_id))

@@ -2,6 +2,7 @@ package com.project.x12112241.there4u;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,15 +32,18 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import mehdi.sakout.fancybuttons.FancyButton;
+
 public class UserInfoActivity extends AppCompatActivity {
 
 
     private static final String TAG = "AddToDatabase";
 
-    private Button btnSubmit, mUploadImage;
+    private FancyButton btnSubmit, mUploadImage;
     private EditText mName, mEmail, mPhoneNum, mCompany;
+    private String mImage = " ";
     private String userID;
-    private ImageView mImageView;
+    private ImageView mImageView, iMg;
 
     private final static int RC_SIGN_IN = 1;
 
@@ -59,7 +63,7 @@ public class UserInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
         mProgressDialog = new ProgressDialog(this);
-        btnSubmit = (Button) findViewById(R.id.btnSubmit);
+        btnSubmit = (FancyButton) findViewById(R.id.btnSubmit);
         mName = (EditText) findViewById(R.id.etName);
         mEmail = (EditText) findViewById(R.id.etEmail);
         mPhoneNum = (EditText) findViewById(R.id.etPhone);
@@ -112,31 +116,36 @@ public class UserInfoActivity extends AppCompatActivity {
                 String email = mEmail.getText().toString();
                 String phoneNum = mPhoneNum.getText().toString();
                 String company = mCompany.getText().toString();
+                String image_url = mImage;
+
 
                 Log.d(TAG, "onClick: Attempting to submit to database: \n" +
                         "name: " + name + "\n" +
                         "email: " + email + "\n" +
                         "phone number: " + phoneNum + "\n" +
-                        "Company " + company + "\n"
+                        "Company " + company + "\n" +
+                        "Image Url " + image_url + "\n"
                 );
 
                 //handle the exception if the EditText fields are null
                 if (!name.equals("") && !email.equals("") && !phoneNum.equals("") && !company.equals("")) {
-                    UserInformation userInformation = new UserInformation(name, email, phoneNum, company);
+                    UserInformation userInformation = new UserInformation(name, email, phoneNum, company, image_url);
                     myRef.child("users").child(userID).setValue(userInformation);
                     toastMessage("New Information has been saved.");
                     mName.setText("");
                     mEmail.setText("");
                     mPhoneNum.setText("");
                     mCompany.setText("");
+
                 } else {
                     toastMessage("Fill out all the fields");
                 }
             }
         });
 
-        mUploadImage = (Button) findViewById(R.id.image_upload);
+        mUploadImage = (FancyButton) findViewById(R.id.image_upload);
         mImageView = (ImageView) findViewById(R.id.imageView);
+        iMg = (ImageView) findViewById(R.id.iMage_View);
         mUploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,6 +172,7 @@ public class UserInfoActivity extends AppCompatActivity {
             mProgressDialog.setMessage("Uploading....");
             mProgressDialog.show();
             uri = data.getData();
+            Picasso.with(UserInfoActivity.this).load(uri).fit().centerCrop().into(iMg);
 
             StorageReference filePath = mStorageRef.child("images").child("users").child(userID).child(uri.getLastPathSegment());
 
@@ -174,6 +184,13 @@ public class UserInfoActivity extends AppCompatActivity {
                     mProgressDialog.dismiss();
 
                     Uri downloadUri = taskSnapshot.getDownloadUrl();
+
+                    System.out.println("Here is the print of url : " + downloadUri);
+
+                    Picasso.with(UserInfoActivity.this).load(downloadUri)
+                            .error(R.mipmap.ic_launcher)
+                            .placeholder(R.mipmap.ic_launcher).fit().centerCrop().into(iMg);
+
 
                     Picasso.with(UserInfoActivity.this).load(downloadUri).fit().centerCrop().into(mImageView);
 

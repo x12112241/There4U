@@ -33,22 +33,21 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+import mehdi.sakout.fancybuttons.FancyButton;
+
 public class HomeActivity extends AppCompatActivity {
 
 
     private DatabaseReference mDatabase;
     private StorageReference mStorageRef;
     private TextView mNameView;
-    private Button MapView;
-    private Button Backbtn;
-    private Button InviteBtn;
-    private Button userInfo;
+    private FancyButton MapView, Backbtn, InviteBtn, userInfo, button;
+
     private DynamicLink dynamicLink;
     private TextView txtResult;
     private FirebaseAnalytics analytics;
     private final String TAG = getClass().getName();
     private static final int REQUEST_INVITE = 0;
-    private Button button;
     public boolean toasted = false;
 
     private String userID;
@@ -129,7 +128,7 @@ public class HomeActivity extends AppCompatActivity {
         mNameView = (TextView) findViewById(R.id.name_view);
 
 
-        MapView = (Button) findViewById(R.id.map_button);
+        MapView = (FancyButton) findViewById(R.id.map_button);
         MapView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,7 +137,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        Backbtn = (Button) findViewById(R.id.return_btn);
+        Backbtn = (FancyButton) findViewById(R.id.return_btn);
         Backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,7 +146,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        userInfo = (Button) findViewById(R.id.user_Info);
+        userInfo = (FancyButton) findViewById(R.id.user_Info);
         userInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +155,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        button = (Button) findViewById(R.id.logout_Btn);
+        button = (FancyButton) findViewById(R.id.logout_Btn);
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -186,7 +185,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        InviteBtn = (Button) findViewById(R.id.invite_button);
+        InviteBtn = (FancyButton) findViewById(R.id.invite_button);
         //InviteBtn.setOnClickListener(new View.OnClickListener() {
         //  @Override
         //  public void onClick(View v) {
@@ -229,14 +228,14 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot == null) {
-                    mNameView.setText("Name :" + " ");
+                    //  mNameView.setText("Name :" + " ");
                     Toast.makeText(HomeActivity.this, "Name is empty", Toast.LENGTH_LONG).show();
                 }
                 UserInformation uInfo = new UserInformation();
-                String name = dataSnapshot.getValue().toString();
-                if (name != null) {
-                    mNameView.setText("Name : " + name);
-                }
+                //   String name = dataSnapshot.getValue().toString();
+                // if (name != null) {
+                // mNameView.setText("Name : " + name);
+                // }
 
 
             }
