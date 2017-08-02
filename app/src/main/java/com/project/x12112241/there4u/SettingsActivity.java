@@ -119,14 +119,6 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-//                Intent gallerIntent = new Intent();
-//                gallerIntent.setType("image/*");
-//                gallerIntent.setAction(Intent.ACTION_GET_CONTENT);
-//
-//                startActivityForResult(Intent.createChooser(gallerIntent, " SELECT IMAGE"),GALLERY_PICK );
-
-
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .start(SettingsActivity.this);
@@ -171,7 +163,6 @@ public class SettingsActivity extends AppCompatActivity {
 
                         if (task.isSuccessful()) {
 
-                            //Toast.makeText(SettingsActivity.this, "Working ....", Toast.LENGTH_LONG).show();
 
                             String download_url = task.getResult().getDownloadUrl().toString();
 

@@ -57,9 +57,6 @@ public class LoginActivity extends AppCompatActivity {
     private String userID;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         signInbtn = (FancyButton) findViewById(R.id.signInbtn);
         Register = (FancyButton) findViewById(R.id.register_Btn);
         mProgressDialog = new ProgressDialog(this);
-        //FirebaseUser user = mAuth.getCurrentUser();
-        //userID = user.getUid();
+
 
         googleButton = (SignInButton) findViewById(R.id.google_Btn);
 
@@ -92,26 +88,6 @@ public class LoginActivity extends AppCompatActivity {
                 int i = v.getId();
                 if (i == R.id.register_Btn) {
                     createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
-
-
-                    //mDatabase.child("users").child(userID).child("name").setValue("Ben");
-
-
-//                    mDatabase.child("user").child(userID).child("name").setValue("Ben121").addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//
-//                            if (task.isSuccessful()) {
-//
-//                                Toast.makeText(LoginActivity.this, "Info Stored..", Toast.LENGTH_LONG).show();
-//
-//                            } else {
-//
-//                                Toast.makeText(LoginActivity.this, "Error...", Toast.LENGTH_LONG).show();
-//
-//                            }
-//                        }
-//                    });
                 }
             }
         });
@@ -124,19 +100,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-//        mDatabase = FirebaseDatabase.getInstance().getReference();
-//        mAuth = FirebaseAuth.getInstance();
-//        FirebaseUser user = mAuth.getCurrentUser();
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
         StorageReference storageRef = mStorageRef.child("images");
-        // StorageReference mountainsRef = storageRef.child("mountains.jpg");
-        //StorageReference mountainImagesRef = storageRef.child("images/mountains.jpg");
-
-        //mountainsRef.getName().equals(mountainImagesRef.getName());    // true
-        //mountainsRef.getPath().equals(mountainImagesRef.getPath());    // false
-
-        //storageRef = mStorageRef.child("images");
 
 
         StorageReference nullRef = storageRef.getRoot().getParent();
@@ -165,80 +131,11 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
 
 
-        //mNameField = (EditText) findViewById(R.id.name_field);
         mEmailField = (EditText) findViewById(R.id.email_field);
         mPasswordField = (EditText) findViewById(R.id.password_txt);
-
-        // NextActivity.setOnClickListener(new View.OnClickListener() {
-
         Register = (FancyButton) findViewById(R.id.register_Btn);
-
-//        NextActivity = (Button) findViewById(R.id.nextActivity);
-//        NextActivity.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent next = new Intent(LoginActivity.this, HomeActivity.class);
-//                startActivity(next);
-//            }
-//        });
-        // mUploadImage = (FancyButton) findViewById(R.id.image_upload);
         mImageView = (ImageView) findViewById(R.id.imageView);
     }
-
-
-//        // onNewIntent(getApplicationContext(),HomeActivity.class););
-//        signInbtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                int i = v.getId();
-//                if (i == R.id.firebase_btn) {
-//                    createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
-//
-//
-//
-//
-//                //1 - Create Child in root object
-//                //2 - Assign some value to the child object
-//
-//                //mDatabase.child("Name").setValue("Ben Callaghan");
-//
-//
-//                String email = mEmailField.getText().toString().trim();
-//                    String password = mPasswordField.getText().toString().trim();
-//                    final HashMap<String, String> dataMap = new HashMap<String, String>();
-//                    dataMap.put("Password", password);
-//                dataMap.put("Email", email);
-//
-//
-////                mDatabase.push().setValue(dataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-////                    @Override
-////                    public void onComplete(@NonNull Task<Void> task) {
-////
-////                        if (task.isSuccessful()) {
-////                            mDatabase.child("name").setValue("Ben11");
-////                            Toast.makeText(LoginActivity.this, "Info Stored..", Toast.LENGTH_LONG).show();
-////
-////                        } else {
-////
-////                            Toast.makeText(LoginActivity.this, "Error...", Toast.LENGTH_LONG).show();
-////
-////                        }
-////                    }
-////
-////                });
-//
-//                }
-//            }
-//
-//        });
-
-
-//        public void onClick (View v){
-//        if (v == signInbtn) {
-//            userLogin();
-//        }
-//    }
 
 
     private void userLogin() {
@@ -261,11 +158,10 @@ public class LoginActivity extends AppCompatActivity {
                             updateUI(null);
                         }
 
-                        }
+                    }
 
                 });
     }
-
 
 
     @Override
@@ -362,6 +258,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.addAuthStateListener(mAuthListener);
 
     }
+
     private void createAccount(String email, String password) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
@@ -457,7 +354,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
     }
-
 
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {

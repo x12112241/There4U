@@ -135,8 +135,8 @@ public class UserInfoActivity extends AppCompatActivity {
                 userMap.put("phone", phoneNum);
                 userMap.put("email", email);
                 userMap.put("company", company);
-                userMap.put("image", "default.jpg");
-                userMap.put("thumb_image", "default");
+                userMap.put("image", "https://cdn.discordapp.com/attachments/293759137123270656/342244956611543040/atomix_user31.png");
+                userMap.put("thumb_image", "https://cdn.discordapp.com/attachments/293759137123270656/342244956611543040/atomix_user31.png");
 
 
 //                Log.d(TAG, "onClick: Attempting to submit to database: \n" +

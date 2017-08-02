@@ -20,7 +20,6 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 
-
 public class AppInviteActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
@@ -91,7 +90,7 @@ public class AppInviteActivity extends AppCompatActivity implements
      */
     // [START on_invite_clicked]
     private void onInviteClicked() {
-        Intent click = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title ))
+        Intent click = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
                 .setMessage(getString(R.string.invitation_message))
                 .setDeepLink(Uri.parse(getString(R.string.invitation_deep_link)))
                 .setCustomImage(Uri.parse(getString(R.string.invitation_custom_image)))
