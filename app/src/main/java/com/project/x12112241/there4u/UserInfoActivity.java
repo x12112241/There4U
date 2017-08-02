@@ -43,7 +43,7 @@ public class UserInfoActivity extends AppCompatActivity {
 
     private static final String TAG = "AddToDatabase";
 
-    private FancyButton btnSubmit, mUploadImage;
+    private FancyButton btnSubmit, mProfileBtn;
     private EditText mName, mEmail, mPhoneNum, mCompany, mStatus;
     private String mImage = " ";
     private String userID;
@@ -68,6 +68,7 @@ public class UserInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_info);
         mProgressDialog = new ProgressDialog(this);
         btnSubmit = (FancyButton) findViewById(R.id.btnSubmit);
+        mProfileBtn = (FancyButton) findViewById(R.id.profile_button);
         mName = (EditText) findViewById(R.id.etName);
         mEmail = (EditText) findViewById(R.id.etEmail);
         mPhoneNum = (EditText) findViewById(R.id.etPhone);
@@ -76,6 +77,7 @@ public class UserInfoActivity extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
         StorageReference storageRef = mStorageRef.child("images");
 
+
         //declare the database reference object. This is what we use to access the database.
         //NOTE: Unless you are signed in, this will not be useable.
         mAuth = FirebaseAuth.getInstance();
@@ -83,6 +85,7 @@ public class UserInfoActivity extends AppCompatActivity {
         myRef = mDatabase.getReference();
         FirebaseUser user = mAuth.getCurrentUser();
         userID = user.getUid();
+        //Picasso.with(UserInfoActivity.this).load(image).into(mDisplayImage)
 
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -132,7 +135,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 userMap.put("phone", phoneNum);
                 userMap.put("email", email);
                 userMap.put("company", company);
-                userMap.put("image", "default");
+                userMap.put("image", "default.jpg");
                 userMap.put("thumb_image", "default");
 
 
@@ -157,29 +160,37 @@ public class UserInfoActivity extends AppCompatActivity {
 
                     myRef.child("users").child(userID).setValue(userMap);
 
+
                 } else {
                     toastMessage("Fill out all the fields");
                 }
             }
         });
-
-        mUploadImage = (FancyButton) findViewById(R.id.image_upload);
-        mImageView = (ImageView) findViewById(R.id.imageView);
-        iMg = (ImageView) findViewById(R.id.iMage_View);
-        bkrnd_Image = (ImageView) findViewById(R.id.image_backround);
-        mUploadImage.setOnClickListener(new View.OnClickListener() {
+        mProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent image = new Intent(Intent.ACTION_PICK);
-                image.setType("image/*");
-                startActivityForResult(image, GALLERY_INTENT);
-
-                // startActivityForResult(image, GALLERY_INTENT);
-
-
+                Intent profile = new Intent(UserInfoActivity.this, SettingsActivity.class);
+                startActivity(profile);
             }
         });
+
+        //  mUploadImage = (FancyButton) findViewById(R.id.image_upload);
+        mImageView = (ImageView) findViewById(R.id.imageView);
+        //  iMg = (ImageView) findViewById(R.id.iMage_View);
+        bkrnd_Image = (ImageView) findViewById(R.id.image_backround);
+//        mUploadImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Intent image = new Intent(Intent.ACTION_PICK);
+//                image.setType("image/*");
+//                startActivityForResult(image, GALLERY_INTENT);
+//
+//                // startActivityForResult(image, GALLERY_INTENT);
+//
+//
+//            }
+//        });
 //        mStorageRef.addValueEventListener(new ValueEventListener() {
 //
 //            @Override
@@ -223,43 +234,66 @@ public class UserInfoActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        Uri uri = null;
-        if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
-            mProgressDialog.setMessage("Uploading....");
-            mProgressDialog.show();
-            uri = data.getData();
-            Picasso.with(UserInfoActivity.this).load(uri).fit().centerCrop().into(bkrnd_Image);
-            Picasso.with(UserInfoActivity.this).load(uri).fit().centerCrop().into(iMg);
-
-            StorageReference filePath = mStorageRef.child("images").child("users").child(userID).child(uri.getLastPathSegment());
-
-            filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    Toast.makeText(UserInfoActivity.this, "Upload Done", Toast.LENGTH_LONG).show();
-                    mProgressDialog.dismiss();
-
-                    Uri downloadUri = taskSnapshot.getDownloadUrl();
-
-                    System.out.println("Here is the print of url : " + downloadUri);
-
-                    Picasso.with(UserInfoActivity.this).load(downloadUri)
-                            .error(R.drawable.t4ulogo).resize(50, 50)
-                            .placeholder(R.drawable.t4ulogo).resize(120, 120).centerCrop().into(iMg);
-
-
-                    Picasso.with(UserInfoActivity.this).load(downloadUri).fit().centerCrop().into(mImageView);
-
-                }
-            });
-
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        Uri uri = null;
+//        if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
+//            mProgressDialog.setMessage("Uploading....");
+//            mProgressDialog.show();
+//            uri = data.getData();
+//            //Picasso.with(UserInfoActivity.this).load(uri).fit().centerCrop().into(bkrnd_Image);
+//            Picasso.with(UserInfoActivity.this).load(uri).fit().centerCrop().into(iMg);
+//
+//            StorageReference filePath = mStorageRef.child("images").child("users").child(userID).child(uri.getLastPathSegment());
+//
+//            filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//
+//                    Toast.makeText(UserInfoActivity.this, "Upload Done", Toast.LENGTH_LONG).show();
+//                    mProgressDialog.dismiss();
+//
+//                    Uri downloadUri = taskSnapshot.getDownloadUrl();
+//
+//                    System.out.println("Here is the print of url : " + downloadUri);
+//
+//                    Picasso.with(UserInfoActivity.this).load(downloadUri)
+//                            .error(R.drawable.t4ulogo).resize(50, 50)
+//                            .placeholder(R.drawable.t4ulogo).resize(120, 120).centerCrop().into(iMg);
+//
+//
+//                    Picasso.with(UserInfoActivity.this).load(downloadUri).fit().centerCrop().into(mImageView);
+//
+//                }
+//            });
+//            FirebaseUser user = mAuth.getCurrentUser();
+//            String current_uid = user.getUid();
+//            myRef = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid);
+//            myRef.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//
+//                    String image = dataSnapshot.child("image").getValue().toString();
+//
+//
+//                    Picasso.with(UserInfoActivity.this).load(image).into(bkrnd_Image);
+//
+//                    Toast.makeText(UserInfoActivity.this, "Image should be there", Toast.LENGTH_LONG).show();
+//
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
+//
+//        }
+//    }
 
     @Override
     public void onStart() {

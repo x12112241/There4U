@@ -89,39 +89,39 @@ public class HomeActivity extends AppCompatActivity {
 //            }
 //        };
 
-        txtResult = (TextView) findViewById(R.id.txtDynamicLinkResult);
-        FirebaseDynamicLinks.getInstance()
-                .getDynamicLink(getIntent())
-                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
-                    @Override
-                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-                        if (pendingDynamicLinkData != null) {
-                            analytics = FirebaseAnalytics.getInstance(HomeActivity.this);
+//        txtResult = (TextView) findViewById(R.id.txtDynamicLinkResult);
+//        FirebaseDynamicLinks.getInstance()
+//                .getDynamicLink(getIntent())
+//                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+//                    @Override
+//                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+//                        if (pendingDynamicLinkData != null) {
+//                            analytics = FirebaseAnalytics.getInstance(HomeActivity.this);
+//
+//                            Uri deeplink = pendingDynamicLinkData.getLink();
+//                            txtResult.append("\nonSuccess called " + deeplink.toString());
+//
+//                            FirebaseAppInvite invite = FirebaseAppInvite.getInvitation(pendingDynamicLinkData);
+//                            if (invite != null) {
+//                                String invitationId = invite.getInvitationId();
+//                                if (!TextUtils.isEmpty(invitationId))
+//                                    txtResult.append("\ninvitation Id " + invitationId);
+//                            }
+//
+//                        }
+//                    }
+//
+//                })
+//                .addOnFailureListener(this, new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        txtResult.append("\nonFailure");
+//                    }
+//                });
 
-                            Uri deeplink = pendingDynamicLinkData.getLink();
-                            txtResult.append("\nonSuccess called " + deeplink.toString());
 
-                            FirebaseAppInvite invite = FirebaseAppInvite.getInvitation(pendingDynamicLinkData);
-                            if (invite != null) {
-                                String invitationId = invite.getInvitationId();
-                                if (!TextUtils.isEmpty(invitationId))
-                                    txtResult.append("\ninvitation Id " + invitationId);
-                            }
-
-                        }
-                    }
-
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        txtResult.append("\nonFailure");
-                    }
-                });
-
-
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("name");
-        mNameView = (TextView) findViewById(R.id.name_view);
+//        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("name");
+//        mNameView = (TextView) findViewById(R.id.name_view);
 
 
         MapView = (FancyButton) findViewById(R.id.map_button);
@@ -220,29 +220,29 @@ public class HomeActivity extends AppCompatActivity {
 //
 //    }
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot == null) {
-                    //  mNameView.setText("Name :" + " ");
-                    Toast.makeText(HomeActivity.this, "Name is empty", Toast.LENGTH_LONG).show();
-                }
-                UserInformation uInfo = new UserInformation();
-                //   String name = dataSnapshot.getValue().toString();
-                // if (name != null) {
-                // mNameView.setText("Name : " + name);
-                // }
-
-
-            }
-
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        mDatabase.addValueEventListener(new ValueEventListener() {
+//            @SuppressLint("SetTextI18n")
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot == null) {
+//                    //  mNameView.setText("Name :" + " ");
+//                    Toast.makeText(HomeActivity.this, "Name is empty", Toast.LENGTH_LONG).show();
+//                }
+//                UserInformation uInfo = new UserInformation();
+//                //   String name = dataSnapshot.getValue().toString();
+//                // if (name != null) {
+//                // mNameView.setText("Name : " + name);
+//                // }
+//
+//
+//            }
+//
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
     }

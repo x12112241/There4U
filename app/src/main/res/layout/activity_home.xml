@@ -14,18 +14,6 @@
         android:layout_height="match_parent">
 
 
-        <TextView
-            android:id="@+id/name_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/user_Info"
-            android:layout_alignEnd="@+id/txtDynamicLinkResult"
-            android:layout_alignRight="@+id/txtDynamicLinkResult"
-            android:layout_marginEnd="33dp"
-            android:layout_marginRight="33dp"
-            android:text="Name:"
-            android:textSize="20sp" />
-
         <mehdi.sakout.fancybuttons.FancyButton
             android:id="@+id/map_button"
             android:layout_width="wrap_content"
@@ -80,15 +68,6 @@
             fancy:fb_focusColor="#9bd823"
             fancy:fb_iconPosition="left"
             fancy:fb_radius="20dp" />
-
-        <TextView
-            android:id="@+id/txtDynamicLinkResult"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/connect_btn"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="13dp"
-            android:hint="Dynamic Link Shown" />
 
         <mehdi.sakout.fancybuttons.FancyButton
             android:id="@+id/logout_Btn"

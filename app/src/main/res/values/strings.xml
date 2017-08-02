@@ -126,5 +126,11 @@
     <string name="status_text_view">Hi there.</string>
     <string name="change_image">Change Image</string>
     <string name="change_status">Change Status</string>
+    <string name="email_settings">Email</string>
+    <string name="phone_settings">Phone</string>
+    <string name="company_settings">Company</string>
+    <string name="update_details_btn">Update Details</string>
+    <string name="enter_user_info">Enter User Info</string>
+    <string name="status">Status :</string>
 
 </resources>
