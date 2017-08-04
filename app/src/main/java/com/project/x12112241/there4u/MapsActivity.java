@@ -164,7 +164,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     markerOptions.title(name);
 
                     PicassoMarker marker = new PicassoMarker(currentLocationMarker);
-                    Picasso.with(MapsActivity.this).load(image).transform(new CircleTransform()).into(marker);
+                    Picasso.with(MapsActivity.this).load(image).resize(300, 300).transform(new CircleTransform()).into(marker);
                     // Picasso.with(SettingsActivity.this).load(image).into(mDisplayImage);
                 } else {
                     MarkerOptions markerOptions = new MarkerOptions();
