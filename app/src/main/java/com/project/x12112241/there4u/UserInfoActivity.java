@@ -44,8 +44,9 @@ public class UserInfoActivity extends AppCompatActivity {
     private static final String TAG = "AddToDatabase";
 
     private FancyButton btnSubmit, mProfileBtn;
-    private EditText mName, mEmail, mPhoneNum, mCompany, mStatus;
+    private EditText mName, mEmail, mPhone, mCompany, mStatus;
     private String mImage = " ";
+    private String mThumb_Image;
     private String userID;
     private ImageView mImageView, iMg, bkrnd_Image;
 
@@ -59,32 +60,79 @@ public class UserInfoActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference myRef;
+    private DatabaseReference mUserDatabase;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
+
+
         mProgressDialog = new ProgressDialog(this);
         btnSubmit = (FancyButton) findViewById(R.id.btnSubmit);
         mProfileBtn = (FancyButton) findViewById(R.id.profile_button);
+
+
         mName = (EditText) findViewById(R.id.etName);
         mEmail = (EditText) findViewById(R.id.etEmail);
-        mPhoneNum = (EditText) findViewById(R.id.etPhone);
+        mPhone = (EditText) findViewById(R.id.etPhone);
         mCompany = (EditText) findViewById(R.id.etCompany);
         mStatus = (EditText) findViewById(R.id.etStatus);
-        mStorageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference storageRef = mStorageRef.child("images");
 
 
         //declare the database reference object. This is what we use to access the database.
         //NOTE: Unless you are signed in, this will not be useable.
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
-        myRef = mDatabase.getReference();
+        mUserDatabase = mDatabase.getReference();
         FirebaseUser user = mAuth.getCurrentUser();
         userID = user.getUid();
+
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference storageRef = mStorageRef.child("images");
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(userID);
+        mUserDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+
+                    String name = dataSnapshot.child("name").getValue().toString();
+                    String status = dataSnapshot.child("status").getValue().toString();
+                    String email = dataSnapshot.child("email").getValue().toString();
+                    String phone = dataSnapshot.child("phone").getValue().toString();
+                    String company = dataSnapshot.child("company").getValue().toString();
+
+                    mName.setText(name);
+                    mStatus.setText(status);
+                    mEmail.setText(email);
+                    mPhone.setText(phone);
+                    mCompany.setText(company);
+
+                } else {
+
+                    mName.setText("");
+                    mStatus.setText("");
+                    mEmail.setText("");
+                    mPhone.setText("");
+                    mCompany.setText("");
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
         //Picasso.with(UserInfoActivity.this).load(image).into(mDisplayImage)
 
 
@@ -100,7 +148,7 @@ public class UserInfoActivity extends AppCompatActivity {
             }
         };
 // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
+        mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -122,43 +170,36 @@ public class UserInfoActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: Submit pressed.");
                 String name = mName.getText().toString();
                 String email = mEmail.getText().toString();
-                String phoneNum = mPhoneNum.getText().toString();
+                String phone = mPhone.getText().toString();
                 String company = mCompany.getText().toString();
-                String image_url = mImage;
+                String image = mImage;
+                String thumb_image = mThumb_Image;
                 String status = mStatus.getText().toString();
 
-                myRef.child("users").child(userID);
+                mUserDatabase.child("users").child(userID);
 
                 HashMap<String, String> userMap = new HashMap<>();
                 userMap.put("name", name);
                 userMap.put("status", status);
-                userMap.put("phone", phoneNum);
+                userMap.put("phone", phone);
                 userMap.put("email", email);
                 userMap.put("company", company);
                 userMap.put("image", "https://cdn.discordapp.com/attachments/293759137123270656/342244956611543040/atomix_user31.png");
                 userMap.put("thumb_image", "https://cdn.discordapp.com/attachments/293759137123270656/342244956611543040/atomix_user31.png");
 
 
-//                Log.d(TAG, "onClick: Attempting to submit to database: \n" +
-//                        "name: " + name + "\n" +
-//                        "email: " + email + "\n" +
-//                        "phone number: " + phoneNum + "\n" +
-//                        "Company " + company + "\n" +
-//                        "Image Url " + image_url + "\n"
-//                );
-
                 //handle the exception if the EditText fields are null
-                if (!name.equals("") && !email.equals("") && !phoneNum.equals("") && !company.equals("") && !status.equals("")) {
-                    UserInformation userInformation = new UserInformation(name, email, phoneNum, company, status);
-                    myRef.child("users").child(userID).setValue(userInformation);
+                if (!name.equals("") && !email.equals("") && !phone.equals("") && !company.equals("") && !status.equals("")) {
+                    UserInformation userInformation = new UserInformation(name, email, phone, company, status, image, thumb_image);
+                    mUserDatabase.setValue(userInformation);
                     toastMessage("New Information has been saved.");
                     mName.setText("");
                     mEmail.setText("");
-                    mPhoneNum.setText("");
+                    mPhone.setText("");
                     mCompany.setText("");
                     mStatus.setText("");
 
-                    myRef.child("users").child(userID).setValue(userMap);
+                    mUserDatabase.setValue(userMap);
 
 
                 } else {
@@ -178,123 +219,8 @@ public class UserInfoActivity extends AppCompatActivity {
         mImageView = (ImageView) findViewById(R.id.imageView);
         //  iMg = (ImageView) findViewById(R.id.iMage_View);
         bkrnd_Image = (ImageView) findViewById(R.id.image_backround);
-//        mUploadImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Intent image = new Intent(Intent.ACTION_PICK);
-//                image.setType("image/*");
-//                startActivityForResult(image, GALLERY_INTENT);
-//
-//                // startActivityForResult(image, GALLERY_INTENT);
-//
-//
-//            }
-//        });
-//        mStorageRef.addValueEventListener(new ValueEventListener() {
-//
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if (dataSnapshot == null) {
-//
-//                    Toast.makeText(UserInfoActivity.this, "Profile pic set.", Toast.LENGTH_LONG).show();
-//                }
-//                UserInformation uInfo = new UserInformation();
-        //   String name = dataSnapshot.getValue().toString();
-        // if (name != null) {
-        // mNameView.setText("Name : " + name);
-        // }
-
-
-//            }
-//
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-
-//        StorageReference imagepath = storageReference.child("Images");
-//        imagepath.putFile(selectedImage).addOnSuccessListener(new
-//                                                                      OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                                                                          @Override
-//                                                                          public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//
-//
-//                                                                              Uri getimage = taskSnapshot.getDownloadUrl();
-//
-//                                                                              Glide.with(QuizActivity.this)
-//                                                                                      .using(new FirebaseImageLoader())
-//                                                                                      .load(getimage)
-//                                                                                      .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-//                                                                                      .into(mImageQuestion);
-//                                                                          }
-//                                                                      });
 
     }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        Uri uri = null;
-//        if (requestCode == GALLERY_INTENT && resultCode == RESULT_OK) {
-//            mProgressDialog.setMessage("Uploading....");
-//            mProgressDialog.show();
-//            uri = data.getData();
-//            //Picasso.with(UserInfoActivity.this).load(uri).fit().centerCrop().into(bkrnd_Image);
-//            Picasso.with(UserInfoActivity.this).load(uri).fit().centerCrop().into(iMg);
-//
-//            StorageReference filePath = mStorageRef.child("images").child("users").child(userID).child(uri.getLastPathSegment());
-//
-//            filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//
-//                    Toast.makeText(UserInfoActivity.this, "Upload Done", Toast.LENGTH_LONG).show();
-//                    mProgressDialog.dismiss();
-//
-//                    Uri downloadUri = taskSnapshot.getDownloadUrl();
-//
-//                    System.out.println("Here is the print of url : " + downloadUri);
-//
-//                    Picasso.with(UserInfoActivity.this).load(downloadUri)
-//                            .error(R.drawable.t4ulogo).resize(50, 50)
-//                            .placeholder(R.drawable.t4ulogo).resize(120, 120).centerCrop().into(iMg);
-//
-//
-//                    Picasso.with(UserInfoActivity.this).load(downloadUri).fit().centerCrop().into(mImageView);
-//
-//                }
-//            });
-//            FirebaseUser user = mAuth.getCurrentUser();
-//            String current_uid = user.getUid();
-//            myRef = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid);
-//            myRef.addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//
-//                    String image = dataSnapshot.child("image").getValue().toString();
-//
-//
-//                    Picasso.with(UserInfoActivity.this).load(image).into(bkrnd_Image);
-//
-//                    Toast.makeText(UserInfoActivity.this, "Image should be there", Toast.LENGTH_LONG).show();
-//
-//
-//                }
-//
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
-//
-//        }
-//    }
-
     @Override
     public void onStart() {
         super.onStart();

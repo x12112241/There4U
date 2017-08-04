@@ -12,9 +12,13 @@
         android:id="@+id/image_backround"
         android:layout_width="328dp"
         android:layout_height="245dp"
-        android:layout_alignTop="@+id/textView"
-        android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/t4ulogo" />
+        app:srcCompat="@drawable/t4ulogo"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_above="@+id/textEmail"
+        android:layout_alignLeft="@+id/textPhone"
+        android:layout_alignStart="@+id/textPhone"
+        android:layout_marginBottom="12dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,7 +28,8 @@
         android:layout_centerHorizontal="true"
         android:textStyle="bold"
         android:id="@+id/textView"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
 
 
     <TextView
@@ -44,18 +49,17 @@
         android:id="@+id/etName"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:elevation="0dp"
-        android:gravity="bottom"
-        android:inputType="textPersonName"
-        android:textAlignment="inherit"
+
         android:layout_alignTop="@+id/textName"
+
+        android:layout_toEndOf="@+id/textName"
         android:layout_toRightOf="@+id/textName"
-        android:layout_toEndOf="@+id/textName" />
+        android:inputType="textPersonName" />
 
     <TextView
         android:text="@string/email"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_below="@+id/textName"
         android:layout_alignEnd="@+id/textName"
         android:gravity="bottom"
@@ -67,8 +71,8 @@
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:elevation="0dp"
+        android:layout_height="50dp"
+
         android:layout_toRightOf="@+id/textEmail"
         android:gravity="bottom"
         android:textAlignment="inherit"
@@ -93,7 +97,7 @@
         android:layout_height="50dp"
         android:layout_below="@+id/textEmail"
         android:layout_toRightOf="@+id/textPhone"
-        android:elevation="0dp"
+
         android:gravity="bottom"
         android:inputType="phone"
         android:textAlignment="inherit" />
@@ -101,7 +105,7 @@
     <TextView
         android:text="@string/company"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:gravity="bottom"
         android:id="@+id/textCompany"
         android:layout_below="@+id/textPhone"
@@ -113,8 +117,8 @@
     <EditText
         android:id="@+id/etCompany"
         android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:elevation="0dp"
+        android:layout_height="50dp"
+
         android:layout_toRightOf="@+id/textCompany"
         android:gravity="bottom"
         android:textAlignment="inherit"
@@ -136,13 +140,13 @@
     <EditText
         android:id="@+id/etStatus"
         android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:elevation="0dp"
-        android:layout_toRightOf="@+id/StatusText"
-        android:gravity="bottom"
-        android:textAlignment="inherit"
+        android:layout_height="50dp"
         android:layout_below="@+id/textCompany"
-        android:inputType="text" />
+        android:layout_toRightOf="@+id/StatusText"
+        android:elevation="0dp"
+        android:gravity="bottom"
+        android:inputType="textPersonName"
+        android:textAlignment="inherit" />
 
 
     <mehdi.sakout.fancybuttons.FancyButton
@@ -156,7 +160,8 @@
         fancy:fb_focusColor="#9bd823"
         fancy:fb_iconPosition="left"
         fancy:fb_radius="20dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="9dp"
         android:layout_below="@+id/etStatus"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -167,19 +172,20 @@
         android:id="@+id/profile_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Go to Profile"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btnSubmit"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="9dp"
+        android:text="@string/go_to_profile"
         fancy:fb_borderColor="#FFFFFF"
         fancy:fb_borderWidth="1dp"
         fancy:fb_defaultColor="#54afe0"
         fancy:fb_focusColor="#9bd823"
         fancy:fb_iconPosition="left"
-        fancy:fb_radius="20dp"
-        android:layout_marginTop="9dp"
-        android:layout_below="@+id/btnSubmit"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        fancy:fb_radius="20dp" />
 
 
 </RelativeLayout>

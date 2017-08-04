@@ -123,7 +123,7 @@
     <string name="log_out">Log Out</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="display_name">Display Name</string>
-    <string name="status_text_view">Hi there.</string>
+    <string name="status_text_view">Status</string>
     <string name="change_image">Change Image</string>
     <string name="change_status">Change Status</string>
     <string name="email_settings">Email</string>
@@ -132,5 +132,6 @@
     <string name="update_details_btn">Update Details</string>
     <string name="enter_user_info">Enter User Info</string>
     <string name="status">Status :</string>
+    <string name="go_to_profile">Go to Profile</string>
 
 </resources>

@@ -3,6 +3,8 @@ package com.project.x12112241.there4u;
 import android.*;
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 
 import com.google.android.gms.location.LocationListener;
@@ -25,9 +27,21 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -40,6 +54,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location lastLocation;
     private Marker currentLocationMarker;
     public static final int REQUEST_LOCATION_CODE = 99;
+    private DatabaseReference mUserDatabase;
+    private FirebaseUser mCurrentUser;
+    Marker marker;
 
 
     @Override
@@ -54,6 +71,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
     }
 
     @Override
@@ -73,6 +92,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return;
         }
     }
+
 
 
     /**
@@ -112,15 +132,56 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (currentLocationMarker != null) {
             currentLocationMarker.remove();
         }
+        mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String current_uid = mCurrentUser.getUid();
+
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title("Current Location");
+        markerOptions.title("You are here");
+
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 
         currentLocationMarker = mMap.addMarker(markerOptions);
-        mMap.animateCamera(CameraUpdateFactory.zoomBy(10));
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(latLng, 15)));
+
+
+        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid);
+
+        mUserDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    MarkerOptions markerOptions = new MarkerOptions();
+
+                    mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String current_uid = mCurrentUser.getUid();
+
+                    String name = dataSnapshot.child("name").getValue().toString();
+                    String image = dataSnapshot.child("image").getValue().toString();
+                    markerOptions.title(name);
+
+                    PicassoMarker marker = new PicassoMarker(currentLocationMarker);
+                    Picasso.with(MapsActivity.this).load(image).into(marker);
+                    // Picasso.with(SettingsActivity.this).load(image).into(mDisplayImage);
+                } else {
+                    MarkerOptions markerOptions = new MarkerOptions();
+
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         if (client != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(client, this);

@@ -14,7 +14,7 @@
         android:layout_height="190dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="71dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/alonebit" />
 
     <TextView
@@ -37,7 +37,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/email_settings"
         android:textColor="@android:color/white"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/settings_Phone"
@@ -48,7 +48,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/phone_settings"
         android:textColor="@android:color/white"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/settings_Company"
@@ -59,7 +59,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/company_settings"
         android:textColor="@android:color/white"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
 
     <TextView
@@ -71,7 +71,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/status_text_view"
         android:textColor="@android:color/white"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <mehdi.sakout.fancybuttons.FancyButton
         android:id="@+id/change_Img_btn"
@@ -101,5 +101,6 @@
         fancy:fb_iconPosition="left"
         fancy:fb_radius="20dp"
         android:layout_below="@+id/change_Img_btn"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp" />
 </RelativeLayout>

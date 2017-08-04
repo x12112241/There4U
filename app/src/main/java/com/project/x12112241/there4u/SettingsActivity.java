@@ -52,7 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     //Storage Firebase
 
-    private StorageReference mImageStorage;
+    private StorageReference mStorageRef;
 
     private ProgressDialog mProgessDialog;
 
@@ -71,7 +71,7 @@ public class SettingsActivity extends AppCompatActivity {
         mImageBtn = (FancyButton) findViewById(R.id.change_Img_btn);
         mUpdateInfoBtn = (FancyButton) findViewById(R.id.status_Btn);
 
-        mImageStorage = FirebaseStorage.getInstance().getReference();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         String current_uid = mCurrentUser.getUid();
@@ -82,21 +82,37 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                String name = dataSnapshot.child("name").getValue().toString();
-                String image = dataSnapshot.child("image").getValue().toString();
-                String status = dataSnapshot.child("status").getValue().toString();
-                String email = dataSnapshot.child("email").getValue().toString();
-                String phone = dataSnapshot.child("phone").getValue().toString();
-                String company = dataSnapshot.child("company").getValue().toString();
-                String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
+                if (dataSnapshot.exists()) {
 
-                mName.setText(name);
-                mStatus.setText(status);
-                mEmail.setText(email);
-                mPhone.setText(phone);
-                mCompany.setText(company);
+                    String name = dataSnapshot.child("name").getValue().toString();
+                    String status = dataSnapshot.child("status").getValue().toString();
+                    String email = dataSnapshot.child("email").getValue().toString();
+                    String phone = dataSnapshot.child("phone").getValue().toString();
+                    String company = dataSnapshot.child("company").getValue().toString();
+                    //String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
 
-                Picasso.with(SettingsActivity.this).load(image).into(mDisplayImage);
+                    String image = dataSnapshot.child("image").getValue().toString();
+                    Picasso.with(SettingsActivity.this).load(image).into(mDisplayImage);
+
+                    mName.setText(name);
+                    mStatus.setText(status);
+                    mEmail.setText(email);
+                    mPhone.setText(phone);
+                    mCompany.setText(company);
+
+
+                } else if (dataSnapshot.child("image").exists()) {
+                    String image = dataSnapshot.child("image").getValue().toString();
+                    Picasso.with(SettingsActivity.this).load(image).into(mDisplayImage);
+                } else {
+
+                    mName.setText("");
+                    mStatus.setText("");
+                    mEmail.setText("");
+                    mPhone.setText("");
+                    mCompany.setText("");
+
+            }
 
 
             }
@@ -155,7 +171,7 @@ public class SettingsActivity extends AppCompatActivity {
                 String current_uid = mCurrentUser.getUid();
                 Uri resultUri = result.getUri();
 
-                StorageReference filepath = mImageStorage.child("images").child("users").child(current_uid).child("profile_image.jpg");
+                StorageReference filepath = mStorageRef.child("images").child("users").child(current_uid).child("profile_image.jpg");
 
                 filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
