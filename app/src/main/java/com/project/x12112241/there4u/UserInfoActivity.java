@@ -184,8 +184,8 @@ public class UserInfoActivity extends AppCompatActivity {
                 userMap.put("phone", phone);
                 userMap.put("email", email);
                 userMap.put("company", company);
-                userMap.put("image", "https://cdn.discordapp.com/attachments/293759137123270656/342244956611543040/atomix_user31.png");
-                userMap.put("thumb_image", "https://cdn.discordapp.com/attachments/293759137123270656/342244956611543040/atomix_user31.png");
+                userMap.put("image", "https://cdn.discordapp.com/attachments/293759137123270656/342988441706823681/there4ulogo.png");
+                userMap.put("thumb_image", "https://cdn.discordapp.com/attachments/293759137123270656/342988441706823681/there4ulogo.png");
 
 
                 //handle the exception if the EditText fields are null

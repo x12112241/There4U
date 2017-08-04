@@ -144,7 +144,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 
         currentLocationMarker = mMap.addMarker(markerOptions);
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(latLng, 15)));
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(latLng, 14)));
 
 
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid);
@@ -164,7 +164,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     markerOptions.title(name);
 
                     PicassoMarker marker = new PicassoMarker(currentLocationMarker);
-                    Picasso.with(MapsActivity.this).load(image).into(marker);
+                    Picasso.with(MapsActivity.this).load(image).transform(new CircleTransform()).into(marker);
                     // Picasso.with(SettingsActivity.this).load(image).into(mDisplayImage);
                 } else {
                     MarkerOptions markerOptions = new MarkerOptions();
