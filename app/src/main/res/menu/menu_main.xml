@@ -7,5 +7,9 @@
     <item
         android:id="@+id/settings_Btn"
         android:title="Account Settings" />
+    <item
+        android:id="@+id/allusers_Btn"
+        android:title="View Users" />
+
 
 </menu>

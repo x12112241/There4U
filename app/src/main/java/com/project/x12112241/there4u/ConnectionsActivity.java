@@ -81,6 +81,12 @@ public class ConnectionsActivity extends AppCompatActivity {
             Intent settingsIntent = new Intent(ConnectionsActivity.this, SettingsActivity.class);
             startActivity(settingsIntent);
         }
+        if (item.getItemId() == R.id.allusers_Btn) {
+
+            Intent usersIntent = new Intent(ConnectionsActivity.this, UsersActivity.class);
+            startActivity(usersIntent);
+        }
+
 
         return true;
     }
