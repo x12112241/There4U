@@ -32,10 +32,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
@@ -77,6 +81,12 @@ public class LoginActivity extends AppCompatActivity {
         signInbtn = (FancyButton) findViewById(R.id.signInbtn);
         Register = (FancyButton) findViewById(R.id.register_Btn);
         mProgressDialog = new ProgressDialog(this);
+        FirebaseUser user = mAuth.getCurrentUser();
+
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+
+
 
 
         googleButton = (SignInButton) findViewById(R.id.google_Btn);
@@ -149,7 +159,18 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+
+                            String current_user_id = mAuth.getCurrentUser().getUid();
+                            String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
+                            mDatabase.child(current_user_id).child("token").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                }
+                            });
+
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "logInWithEmail:failure", task.getException());
@@ -273,6 +294,31 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            userID = user.getUid();
+                            String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
+                            mDatabase.child(userID);
+
+
+                            String name = "";
+                            String email = "";
+                            String phone = "";
+                            String company = "";
+                            String image = "";
+                            String status = "";
+                            String thumb_image = "";
+
+                            HashMap<String, String> userMap = new HashMap<>();
+                            userMap.put("token", deviceToken);
+                            userMap.put("name", name);
+                            userMap.put("status", status);
+                            userMap.put("phone", phone);
+                            userMap.put("email", email);
+                            userMap.put("company", company);
+                            userMap.put("image", "https://cdn.discordapp.com/attachments/293759137123270656/342988441706823681/there4ulogo.png");
+                            userMap.put("thumb_image", "https://cdn.discordapp.com/attachments/293759137123270656/342988441706823681/there4ulogo.png");
+
+                            mDatabase.child(userID).setValue(userMap);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -367,6 +413,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -172,39 +173,68 @@ public class UserInfoActivity extends AppCompatActivity {
                 String email = mEmail.getText().toString();
                 String phone = mPhone.getText().toString();
                 String company = mCompany.getText().toString();
-                String image = mImage;
-                String thumb_image = mThumb_Image;
+//                String image = mImage;
+//                String thumb_image = mThumb_Image;
                 String status = mStatus.getText().toString();
 
-                mUserDatabase.child("users").child(userID);
 
-                HashMap<String, String> userMap = new HashMap<>();
-                userMap.put("name", name);
-                userMap.put("status", status);
-                userMap.put("phone", phone);
-                userMap.put("email", email);
-                userMap.put("company", company);
-                userMap.put("image", "https://cdn.discordapp.com/attachments/293759137123270656/342988441706823681/there4ulogo.png");
-                userMap.put("thumb_image", "https://cdn.discordapp.com/attachments/293759137123270656/342988441706823681/there4ulogo.png");
+                mUserDatabase.child("name").setValue(name);
+                mUserDatabase.child("email").setValue(email);
+                mUserDatabase.child("phone").setValue(phone);
+                mUserDatabase.child("company").setValue(company);
+                mUserDatabase.child("status").setValue(status);
+
+                toastMessage("Profile updated");
+
+//                HashMap<String, String> userMap = new HashMap<>();
+//                userMap.put("name", name);
+//                userMap.put("status", status);
+//                userMap.put("phone", phone);
+//                userMap.put("email", email);
+//                userMap.put("company", company);
+//                userMap.put("image", "https://cdn.discordapp.com/attachments/293759137123270656/342988441706823681/there4ulogo.png");
+//                userMap.put("thumb_image", "https://cdn.discordapp.com/attachments/293759137123270656/342988441706823681/there4ulogo.png");
 
 
                 //handle the exception if the EditText fields are null
-                if (!name.equals("") && !email.equals("") && !phone.equals("") && !company.equals("") && !status.equals("")) {
-                    UserInformation userInformation = new UserInformation(name, email, phone, company, status, image, thumb_image);
-                    mUserDatabase.setValue(userInformation);
-                    toastMessage("New Information has been saved.");
-                    mName.setText("");
-                    mEmail.setText("");
-                    mPhone.setText("");
-                    mCompany.setText("");
-                    mStatus.setText("");
+//                if (!name.equals("") && !email.equals("") && !phone.equals("") && !company.equals("") && !status.equals("")) {
+//                    UserInformation userInformation = new UserInformation(name, email, phone, company, status);
+//                    mUserDatabase.setValue(userInformation);
+//                    toastMessage("New Information has been saved.");
+//                    mName.setText("");
+//                    mEmail.setText("");
+//                    mPhone.setText("");
+//                    mCompany.setText("");
+//                    mStatus.setText("");
 
-                    mUserDatabase.setValue(userMap);
+                //mUserDatabase.setValue(userMap);
 
 
-                } else {
-                    toastMessage("Fill out all the fields");
-                }
+                // }
+
+
+//                if (name == "") {
+//                    toastMessage("please input Name");
+//                }
+//                if (email.equals("")) {
+//                    toastMessage("please input Email");
+//                }
+//                if (phone.equals("")) {
+//                    toastMessage("please input Phone Number");
+//                }
+//                if (company.equals("")) {
+//                    toastMessage("please input Company");if (status.equals("")) {
+//                        toastMessage("please input Status");
+//
+//                    }
+//                }
+//                if (TextUtils.isEmpty(name)){toastMessage("Cmon Bruh");
+//                }
+//                if (!name.equals("") && !email.equals("") && !phone.equals("") && !company.equals("") && !status.equals("")) {
+//
+//                    toastMessage("Profile updated");
+//                }
+
             }
         });
         mProfileBtn.setOnClickListener(new View.OnClickListener() {
