@@ -54,12 +54,29 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference myRef;
+    private DatabaseReference mUsersDatabase;
+    private String mCurrentUserId;
 
 
     @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+        mCurrentUserId = mAuth.getCurrentUser().getUid();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser == null) {
+            Intent loginIntent = new Intent(HomeActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
+            finish();
+
+
+        } else {
+
+            mUsersDatabase.child(mCurrentUserId).child("online").setValue(true);
+
+        }
     }
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +87,7 @@ public class HomeActivity extends AppCompatActivity {
         myRef = mFirebaseDatabase.getReference();
         FirebaseUser user = mAuth.getCurrentUser();
         userID = user.getUid();
+        mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users");
 
 
 //        mAuthListener = new FirebaseAuth.AuthStateListener() {

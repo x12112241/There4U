@@ -51,10 +51,12 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
     compile 'com.firebaseui:firebase-ui:2.1.1'
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'id.zelory:compressor:2.1.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC1'
 }
+
 
 
 

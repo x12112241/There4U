@@ -28,6 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -85,6 +87,7 @@ public class SettingsActivity extends AppCompatActivity {
         String current_uid = mCurrentUser.getUid();
 
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid);
+        mUserDatabase.keepSynced(true);
 
         mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -97,10 +100,23 @@ public class SettingsActivity extends AppCompatActivity {
                     String email = dataSnapshot.child("email").getValue().toString();
                     String phone = dataSnapshot.child("phone").getValue().toString();
                     String company = dataSnapshot.child("company").getValue().toString();
-                    //String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
+                    String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
+                    final String image = dataSnapshot.child("image").getValue().toString();
 
-                    String image = dataSnapshot.child("image").getValue().toString();
-                    Picasso.with(SettingsActivity.this).load(image).into(mDisplayImage);
+
+                    Picasso.with(SettingsActivity.this).load(thumb_image).networkPolicy(NetworkPolicy.OFFLINE).into(mDisplayImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+
+                            Picasso.with(SettingsActivity.this).load(image).into(mDisplayImage);
+
+                        }
+                    });
 
                     mName.setText(name);
                     mStatus.setText(status);
@@ -109,9 +125,9 @@ public class SettingsActivity extends AppCompatActivity {
                     mCompany.setText(company);
 
 
-                } else if (dataSnapshot.child("image").exists()) {
-                    String image = dataSnapshot.child("image").getValue().toString();
-                    Picasso.with(SettingsActivity.this).load(image).into(mDisplayImage);
+                } else if (dataSnapshot.child("thumb_image").exists()) {
+                    String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
+                    Picasso.with(SettingsActivity.this).load(thumb_image).into(mDisplayImage);
                 } else {
 
                     mName.setText("");

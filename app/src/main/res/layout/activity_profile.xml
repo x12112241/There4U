@@ -21,11 +21,11 @@
         android:id="@+id/profile_displayName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Display Name"
         android:layout_below="@+id/profile_image"
         android:layout_centerHorizontal="true"
+        android:text="Display Name"
         android:textColor="@android:color/white"
-        android:textSize="24sp" />
+        android:textSize="28sp" />
 
     <TextView
         android:id="@+id/profile_status"
@@ -36,18 +36,23 @@
         android:layout_marginTop="40dp"
         android:text="Status"
         android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/profile_totalFriends"
+
+    <mehdi.sakout.fancybuttons.FancyButton
+        android:id="@+id/profile_add_group_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="95dp"
-        android:text="Total Friends"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:layout_marginBottom="100dp"
+        android:text="Add to Group"
+        fancy:fb_borderColor="#FFFFFF"
+        fancy:fb_borderWidth="1dp"
+        fancy:fb_defaultColor="#54afe0"
+        fancy:fb_focusColor="#9bd823"
+        fancy:fb_iconPosition="left"
+        fancy:fb_radius="20dp" />
 
     <mehdi.sakout.fancybuttons.FancyButton
         android:id="@+id/profile_send_req_btn"
@@ -70,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="20dp"
         android:text="Decline Friend Request"
         fancy:fb_borderColor="#FFFFFF"
         fancy:fb_borderWidth="1dp"

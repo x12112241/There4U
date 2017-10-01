@@ -12,14 +12,19 @@ import android.widget.TableLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 public class ConnectionsActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private Toolbar mToolbar;
+    private DatabaseReference mUsersDatabase;
 
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private String mCurrentUserId;
 
     private TabLayout mTabLayout;
 
@@ -31,6 +36,8 @@ public class ConnectionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_connections);
 
         mAuth = FirebaseAuth.getInstance();
+        mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+        mCurrentUserId = mAuth.getCurrentUser().getUid();
 
         mToolbar = (Toolbar) findViewById(R.id.connections_toolbar);
         setSupportActionBar(mToolbar);
@@ -56,7 +63,26 @@ public class ConnectionsActivity extends AppCompatActivity {
             Intent loginIntent = new Intent(ConnectionsActivity.this, LoginActivity.class);
             startActivity(loginIntent);
             finish();
+
+
+        } else {
+
+            mUsersDatabase.child(mCurrentUserId).child("online").setValue(true);
+
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null) {
+
+            mUsersDatabase.child(mCurrentUserId).child("online").setValue(ServerValue.TIMESTAMP);
+            mUsersDatabase.child(mCurrentUserId).child("lastSeen").setValue(ServerValue.TIMESTAMP);
+        }
+
     }
 
     @Override

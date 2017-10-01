@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/message_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="25dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/message_image_layout"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/new_user" />
+
+    <TextView
+        android:id="@+id/message_text_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_toEndOf="@+id/message_image_layout"
+        android:layout_toRightOf="@+id/message_image_layout"
+        android:background="@drawable/message_text_backround"
+        android:padding="10dp"
+        android:text="TextView"
+        android:textColor="@android:color/white"
+        android:textSize="14dp"
+        android:layout_below="@+id/message_name_layout" />
+
+    <TextView
+        android:id="@+id/message_name_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/message_text_layout"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/message_text_layout"
+        android:text="Display Name"
+        android:textColor="@android:color/black"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text_time_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="9dp"
+        android:layout_marginStart="9dp"
+        android:layout_toEndOf="@+id/message_name_layout"
+        android:layout_toRightOf="@+id/message_name_layout"
+        android:text="00:00" />
+
+
+</RelativeLayout>

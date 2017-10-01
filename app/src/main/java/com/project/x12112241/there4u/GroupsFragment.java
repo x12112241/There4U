@@ -1,3 +1,5 @@
+
+
 package com.project.x12112241.there4u;
 
 
@@ -16,7 +18,6 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,11 +31,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FriendsFragment extends Fragment {
+public class GroupsFragment extends Fragment {
 
-    private RecyclerView mFriendsList;
+    private RecyclerView mGroupsList;
 
-    private DatabaseReference mFriendsDatabase;
+    private DatabaseReference mGroupsDatabase;
     private DatabaseReference mUsersDatabase;
 
     private FirebaseAuth mAuth;
@@ -43,7 +44,7 @@ public class FriendsFragment extends Fragment {
 
     private View mMainView;
 
-    public FriendsFragment() {
+    public GroupsFragment() {
         // Required empty public constructor
     }
 
@@ -52,21 +53,21 @@ public class FriendsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mMainView = inflater.inflate(R.layout.fragment_friends, container, false);
+        mMainView = inflater.inflate(R.layout.fragment_groups, container, false);
 
-        mFriendsList = (RecyclerView) mMainView.findViewById(R.id.friends_list);
+        mGroupsList = (RecyclerView) mMainView.findViewById(R.id.group_list);
         mAuth = FirebaseAuth.getInstance();
 
         mCurrent_user_id = mAuth.getCurrentUser().getUid();
 
-        mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friends").child(mCurrent_user_id);
-        mFriendsDatabase.keepSynced(true);
+        mGroupsDatabase = FirebaseDatabase.getInstance().getReference().child("Group").child(mCurrent_user_id);
+        mGroupsDatabase.keepSynced(true);
         mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         mUsersDatabase.keepSynced(true);
 
 
-        //mFriendsList.setHasFixedSize(true);
-        mFriendsList.setLayoutManager(new LinearLayoutManager(getContext()));
+        //mGroupsList.setHasFixedSize(true);
+        mGroupsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
         // Inflate the layout for this fragment
@@ -77,11 +78,11 @@ public class FriendsFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        FirebaseRecyclerAdapter<Friends, FriendsViewHolder> friendsRecyclerViewAdapter = new FirebaseRecyclerAdapter<Friends, FriendsViewHolder>(Friends.class, R.layout.user_profile_layout, FriendsViewHolder.class, mFriendsDatabase) {
+        FirebaseRecyclerAdapter<Groups, GroupsViewHolder> groupsRecyclerViewAdapter = new FirebaseRecyclerAdapter<Groups, GroupsViewHolder>(Groups.class, R.layout.user_profile_layout, GroupsViewHolder.class, mGroupsDatabase) {
             @Override
-            protected void populateViewHolder(final FriendsViewHolder friendsviewHolder, Friends friends, int i) {
+            protected void populateViewHolder(final GroupsViewHolder groupsviewHolder, Groups groups, int i) {
 
-                friendsviewHolder.setDate(friends.getDate());
+                groupsviewHolder.setDate(groups.getDate());
                 final String list_user_id = getRef(i).getKey();
 
 
@@ -95,15 +96,14 @@ public class FriendsFragment extends Fragment {
                         if (dataSnapshot.hasChild("online")) {
 
                             String userOnline = dataSnapshot.child("online").getValue().toString();
-                            friendsviewHolder.setUserOnline(userOnline);
+                            groupsviewHolder.setUserOnline(userOnline);
                         }
 
 
+                        groupsviewHolder.setName(userName);
+                        groupsviewHolder.setUserImage(userThumb, getContext());
 
-                        friendsviewHolder.setName(userName);
-                        friendsviewHolder.setUserImage(userThumb, getContext());
-
-                        friendsviewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                        groupsviewHolder.mView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
 
@@ -144,8 +144,6 @@ public class FriendsFragment extends Fragment {
                         });
 
 
-
-
                     }
 
                     @Override
@@ -156,15 +154,15 @@ public class FriendsFragment extends Fragment {
 
             }
         };
-        mFriendsList.setAdapter(friendsRecyclerViewAdapter);
+        mGroupsList.setAdapter(groupsRecyclerViewAdapter);
 
     }
 
-    public static class FriendsViewHolder extends RecyclerView.ViewHolder {
+    public static class GroupsViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
 
-        public FriendsViewHolder(View itemView) {
+        public GroupsViewHolder(View itemView) {
             super(itemView);
 
             mView = itemView;

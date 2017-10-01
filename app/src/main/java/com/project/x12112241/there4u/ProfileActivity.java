@@ -38,13 +38,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     private CircleImageView mProfileImage;
     private TextView mProfileName, mProfileStatus, mProfileFriendCount;
-    private FancyButton mProfileSendReqBtn, mDeclineReqBtn;
+    private FancyButton mProfileSendReqBtn, mDeclineReqBtn, mGroupAddBtn;
 
-    private DatabaseReference mUsersDatabase, mFriendReqDataBase, mFriendDatabase, mNotificationDatabase, mRootRef;
+    private DatabaseReference mUsersDatabase, mFriendReqDataBase, mFriendDatabase, mNotificationDatabase, mRootRef, mGroupDatabase;
 
     private FirebaseUser mCurrent_user;
 
-    private String mfriend_State;
+    private String mfriend_State, mgroup_State;
 
 
     @Override
@@ -60,6 +60,7 @@ public class ProfileActivity extends AppCompatActivity {
         mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user_id);
         mFriendReqDataBase = FirebaseDatabase.getInstance().getReference().child("friend_request");
         mFriendDatabase = FirebaseDatabase.getInstance().getReference().child("Friends");
+        mGroupDatabase = FirebaseDatabase.getInstance().getReference().child("Group");
         mCurrent_user = FirebaseAuth.getInstance().getCurrentUser();
         mNotificationDatabase = FirebaseDatabase.getInstance().getReference().child("notifications");
         mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -68,11 +69,13 @@ public class ProfileActivity extends AppCompatActivity {
         mProfileImage = (CircleImageView) findViewById(R.id.profile_image);
         mProfileName = (TextView) findViewById(R.id.profile_displayName);
         mProfileStatus = (TextView) findViewById(R.id.profile_status);
-        mProfileFriendCount = (TextView) findViewById(R.id.profile_totalFriends);
+        //mProfileFriendCount = (TextView) findViewById(R.id.profile_totalFriends);
         mProfileSendReqBtn = (FancyButton) findViewById(R.id.profile_send_req_btn);
         mDeclineReqBtn = (FancyButton) findViewById(R.id.profile_decline_req_btn);
+        mGroupAddBtn = (FancyButton) findViewById(R.id.profile_add_group_btn);
 
         mfriend_State = "not_friends";
+        mgroup_State = "not_grouped";
 
         mUsersDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -148,7 +151,127 @@ public class ProfileActivity extends AppCompatActivity {
 
             }
         });
+//------------------add group database
+        mGroupDatabase.child(mCurrent_user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                if (dataSnapshot.hasChild(user_id)) {
+
+                    String req_type = dataSnapshot.child(user_id).child("request_type").getValue().toString();
+
+                    if (req_type.equals("group")) {
+
+                        mgroup_State = "group";
+                        mGroupAddBtn.setText("Remove From Group");
+
+                    } else if (req_type.equals("not_grouped")) {
+                        mgroup_State = "not_grouped";
+                        mGroupAddBtn.setText("Add to Group");
+                    }
+
+
+                } else {
+                    mGroupDatabase.child(mCurrent_user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.hasChild(user_id)) {
+
+                                mgroup_State = "not_grouped";
+                                mGroupAddBtn.setText("Add to Group");
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+//----------------------------------------
+
+        //---add group button
+
+        mGroupAddBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mGroupAddBtn.setEnabled(false);
+
+
+                // NOT Grouped STATE//
+                if (mgroup_State.equals("not_grouped")) {
+
+                    final String currentDate = DateFormat.getDateTimeInstance().format(new Date());
+
+
+                    Map groupMap = new HashMap();
+                    groupMap.put("Group/" + mCurrent_user.getUid() + "/" + user_id + "/date", currentDate);
+                    groupMap.put("Group/" + user_id + "/" + mCurrent_user.getUid() + "/date", currentDate);
+                    groupMap.put("Group/" + mCurrent_user.getUid() + "/" + user_id + "/request_type", "group");
+                    groupMap.put("Group/" + user_id + "/" + mCurrent_user.getUid() + "/request_type", "group");
+
+                    mRootRef.updateChildren(groupMap, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                            mGroupAddBtn.setEnabled(true);
+                            mgroup_State = "group";
+                            mGroupAddBtn.setText("Remove from Group");
+
+
+                            if (databaseError != null) {
+
+
+                                Toast.makeText(ProfileActivity.this, " There was an error sending the request", Toast.LENGTH_SHORT);
+                            }
+                        }
+                    });
+                }
+                //grouped State
+
+                if (mgroup_State.equals("group")) {
+
+
+                    Map ungroupMap = new HashMap();
+                    ungroupMap.put("Group/" + mCurrent_user.getUid() + "/" + user_id, null);
+                    ungroupMap.put("Group/" + user_id + "/" + mCurrent_user.getUid(), null);
+
+                    mRootRef.updateChildren(ungroupMap, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                            if (databaseError == null) {
+
+                                mGroupAddBtn.setEnabled(true);
+                                mgroup_State = "not_grouped";
+                                mGroupAddBtn.setText("Add to Group");
+
+
+                            } else {
+
+                                String error = databaseError.getMessage();
+
+                                Toast.makeText(ProfileActivity.this, error, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                    });
+                }
+            }
+
+        });
+
+
+        //---------------
         mProfileSendReqBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
