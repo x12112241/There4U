@@ -144,7 +144,7 @@
             <intent-filter>
                 <action android:name="com.project.x12112241.there4u_TARGET_NOTIFICATION" />
 
-                <catagory android:name="android:intent.catagory.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity

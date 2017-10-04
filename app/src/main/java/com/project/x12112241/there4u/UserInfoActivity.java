@@ -100,16 +100,28 @@ public class UserInfoActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
 
                     String name = dataSnapshot.child("name").getValue().toString();
-                    String status = dataSnapshot.child("status").getValue().toString();
-                    String email = dataSnapshot.child("email").getValue().toString();
-                    String phone = dataSnapshot.child("phone").getValue().toString();
-                    String company = dataSnapshot.child("company").getValue().toString();
-
                     mName.setText(name);
+                    if (dataSnapshot.child("status").exists()) {
+                        String status = dataSnapshot.child("status").getValue().toString();
                     mStatus.setText(status);
+                    } else {
+                        mStatus.setText("");
+                    }
+                    String email = dataSnapshot.child("email").getValue().toString();
                     mEmail.setText(email);
-                    mPhone.setText(phone);
-                    mCompany.setText(company);
+                    if (dataSnapshot.child("phone").exists()) {
+                        String phone = dataSnapshot.child("phone").getValue().toString();
+                        mPhone.setText(phone);
+                    } else {
+                        mPhone.setText("");
+                    }
+                    if (dataSnapshot.child("company").exists()) {
+                        String company = dataSnapshot.child("company").getValue().toString();
+                        mCompany.setText(company);
+                    } else {
+                        mCompany.setText("");
+                    }
+
 
                 } else {
 

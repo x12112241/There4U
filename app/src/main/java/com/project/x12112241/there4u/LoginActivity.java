@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.UserInfo;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -413,8 +415,34 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            String deviceToken = FirebaseInstanceId.getInstance().getToken();
+                            String name = user.getDisplayName();
+                            String current_user_id = mAuth.getCurrentUser().getUid();
+
+
+                            String email = user.getEmail();
+                            String phone = user.getPhoneNumber();
+                            String company = "";
+                            String image = "";
+                            String status = "";
+                            String thumb_image = "";
+
+                            mDatabase.child(current_user_id).child("name").setValue(name);
+                            mDatabase.child(current_user_id).child("email").setValue(email);
+                            mDatabase.child(current_user_id).child("token").setValue(deviceToken);
+
+
+//                                HashMap<String, String> guserMap = new HashMap<>();
+//                                guserMap.put("token", deviceToken);
+//                                guserMap.put("name", name);
+//                                guserMap.put("email", email);
+//
+//
+//                                mDatabase.child(current_user_id).setValue(guserMap);
+
 
                             updateUI(user);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());

@@ -96,33 +96,59 @@ public class SettingsActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
 
                     String name = dataSnapshot.child("name").getValue().toString();
-                    String status = dataSnapshot.child("status").getValue().toString();
+                    mName.setText(name);
+                    if (dataSnapshot.child("status").exists()) {
+                        String status = dataSnapshot.child("status").getValue().toString();
+                        mStatus.setText(status);
+                    } else {
+                        mStatus.setText("");
+                    }
                     String email = dataSnapshot.child("email").getValue().toString();
-                    String phone = dataSnapshot.child("phone").getValue().toString();
-                    String company = dataSnapshot.child("company").getValue().toString();
-                    String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
-                    final String image = dataSnapshot.child("image").getValue().toString();
+                    mEmail.setText(email);
+                    if (dataSnapshot.child("phone").exists()) {
+                        String phone = dataSnapshot.child("phone").getValue().toString();
+                        mPhone.setText(phone);
+                    } else {
+                        mPhone.setText("");
+                    }
+                    if (dataSnapshot.child("company").exists()) {
+                        String company = dataSnapshot.child("company").getValue().toString();
+                        mCompany.setText(company);
+                    } else {
+                        mCompany.setText("");
+                    }
 
 
-                    Picasso.with(SettingsActivity.this).load(thumb_image).networkPolicy(NetworkPolicy.OFFLINE).into(mDisplayImage, new Callback() {
-                        @Override
-                        public void onSuccess() {
+                    if (dataSnapshot.child("thumb_image").exists()) {
+                        String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
+                        Picasso.with(SettingsActivity.this).load(thumb_image).into(mDisplayImage);
+                        final String image = dataSnapshot.child("image").getValue().toString();
 
-                        }
 
-                        @Override
-                        public void onError() {
+                        Picasso.with(SettingsActivity.this).load(thumb_image).networkPolicy(NetworkPolicy.OFFLINE).into(mDisplayImage, new Callback() {
+                            @Override
+                            public void onSuccess() {
 
-                            Picasso.with(SettingsActivity.this).load(image).into(mDisplayImage);
+                            }
 
-                        }
-                    });
+                            @Override
+                            public void onError() {
+
+                                Picasso.with(SettingsActivity.this).load(image).into(mDisplayImage);
+
+                            }
+                        });
+
+                    } else {
+                        Picasso.with(SettingsActivity.this).load("https://cdn.discordapp.com/attachments/293759137123270656/342988441706823681/there4ulogo.png").into(mDisplayImage);
+                    }
+
+
+
+
 
                     mName.setText(name);
-                    mStatus.setText(status);
                     mEmail.setText(email);
-                    mPhone.setText(phone);
-                    mCompany.setText(company);
 
 
                 } else if (dataSnapshot.child("thumb_image").exists()) {

@@ -56,12 +56,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleApiClient client;
     private LocationRequest locationRequest;
     private Location lastLocation;
-    private Marker currentLocationMarker, mfriendsMarker;
+    private Marker currentLocationMarker, mfriendsMarker, mfriendsMarker2;
 
     public static final int REQUEST_LOCATION_CODE = 99;
     private String mCurrent_user_id;
     private DatabaseReference mUserDatabase;
-    private DatabaseReference mLocationDatabase, mFriendsDatabase, mUsersDatabase;
+    private DatabaseReference mLocationDatabase, mFriendsDatabase, mUsersDatabase, mRootRef, mHFriendDatabase;
     private FirebaseUser mCurrentUser;
     private FirebaseAuth mAuth;
     Marker marker;
@@ -151,10 +151,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(final Location location) {
         lastLocation = location;
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
-        String current_uid = mCurrentUser.getUid();
+        final String current_uid = mCurrentUser.getUid();
 
         mLocationDatabase = FirebaseDatabase.getInstance().getReference().child("users");
 
@@ -182,11 +182,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title(mLocationDatabase.child(current_uid).child("name").getKey().toString());
+        //markerOptions.title(mLocationDatabase.child(current_uid).child("name").getKey().toString());
 
         mLocationDatabase.child(current_uid).child("position").setValue(latLng).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+
 
             }
         });
@@ -195,7 +196,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         currentLocationMarker = mMap.addMarker(markerOptions);
 
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(latLng, 14)));
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(latLng, 11)));
 
 
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(current_uid);
@@ -212,11 +213,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     String name = dataSnapshot.child("name").getValue().toString();
                     String image = dataSnapshot.child("thumb_image").getValue().toString();
-                    markerOptions.title(dataSnapshot.child(name).getValue().toString());
+                    markerOptions.title(dataSnapshot.child("name").getValue().toString());
 
                     LatLng LatLng2 = new LatLng(Double.parseDouble(dataSnapshot.child("position").child("latitude").getValue().toString()), Double.parseDouble(dataSnapshot.child("position").child("longitude").getValue().toString()));
 
-                    mfriendsMarker = mMap.addMarker(new MarkerOptions().position(LatLng2).title("Hello"));
+                    mfriendsMarker = mMap.addMarker(new MarkerOptions().position(LatLng2).title(dataSnapshot.child("name").getValue().toString()));
                     PicassoMarker marker2 = new PicassoMarker(mfriendsMarker);
                     Picasso.with(MapsActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE).resize(300, 300).transform(new CircleTransform()).into(marker2);
 
@@ -243,6 +244,126 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+
+
+        ////-----------hardcode friend-----------/////////
+
+        mHFriendDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+
+        mHFriendDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    MarkerOptions markerOptions = new MarkerOptions();
+
+                    mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String current_uid = mCurrentUser.getUid();
+
+                    String name = dataSnapshot.child("RpLflfW010fsaW1V2rdMSfYxpQ03").child("name").getValue().toString();
+                    String image = dataSnapshot.child("RpLflfW010fsaW1V2rdMSfYxpQ03").child("thumb_image").getValue().toString();
+                    markerOptions.title(dataSnapshot.child("RpLflfW010fsaW1V2rdMSfYxpQ03").child("name").getValue().toString());
+
+                    LatLng LatLng2 = new LatLng(Double.parseDouble(dataSnapshot.child("RpLflfW010fsaW1V2rdMSfYxpQ03").child("position").child("latitude").getValue().toString()), Double.parseDouble(dataSnapshot.child("RpLflfW010fsaW1V2rdMSfYxpQ03").child("position").child("longitude").getValue().toString()));
+
+                    mfriendsMarker = mMap.addMarker(new MarkerOptions().position(LatLng2).title(dataSnapshot.child("RpLflfW010fsaW1V2rdMSfYxpQ03").child("name").getValue().toString()));
+                    PicassoMarker marker2 = new PicassoMarker(mfriendsMarker);
+                    Picasso.with(MapsActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE).resize(300, 300).transform(new CircleTransform()).into(marker2);
+
+                    PicassoMarker marker = new PicassoMarker(currentLocationMarker);
+                    //Picasso.with(MapsActivity.this).load(image).resize(300, 300).transform(new CircleTransform()).into(marker);
+                    Picasso.with(MapsActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE).resize(300, 300).transform(new CircleTransform()).into(marker);
+
+                    MarkerOptions markerOptions2 = new MarkerOptions();
+
+                    mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String current_uid2 = mCurrentUser.getUid();
+
+
+                    markerOptions2.title(dataSnapshot.child("c4WO0XZFivayha4uJQvhmtwIhQ22").child("name").getValue().toString());
+                    String name2 = dataSnapshot.child("c4WO0XZFivayha4uJQvhmtwIhQ22").child("name").getValue().toString();
+                    String image2 = dataSnapshot.child("c4WO0XZFivayha4uJQvhmtwIhQ22").child("thumb_image").getValue().toString();
+
+                    LatLng LatLng3 = new LatLng(Double.parseDouble(dataSnapshot.child("c4WO0XZFivayha4uJQvhmtwIhQ22").child("position").child("latitude").getValue().toString()), Double.parseDouble(dataSnapshot.child("c4WO0XZFivayha4uJQvhmtwIhQ22").child("position").child("longitude").getValue().toString()));
+
+                    mfriendsMarker2 = mMap.addMarker(new MarkerOptions().position(LatLng3).title(dataSnapshot.child("c4WO0XZFivayha4uJQvhmtwIhQ22").child("name").getValue().toString()));
+                    PicassoMarker marker3 = new PicassoMarker(mfriendsMarker2);
+                    Picasso.with(MapsActivity.this).load(image2).networkPolicy(NetworkPolicy.OFFLINE).resize(300, 300).transform(new CircleTransform()).into(marker3);
+
+
+                    // Picasso.with(SettingsActivity.this).load(image).into(mDisplayImage);
+                } else {
+
+                    MarkerOptions markerOptions = new MarkerOptions();
+
+
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        ////-----------hardcode f-----------/////////
+        ////-----------Show friend-----------/////////
+//        mRootRef = FirebaseDatabase.getInstance().getReference();
+//        mCurrent_user_id = mAuth.getCurrentUser().getUid();
+//
+//        mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friends").child(mCurrent_user_id);
+//        mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+//
+//        mRootRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//
+//                    Friends friend = dataSnapshot.getValue(Friends.class);
+//                    String Friendinfo = dataSnapshot.child("Friends").child(mCurrent_user_id).child(friend).getValue().toString();
+//
+//                    MarkerOptions markerOptions = new MarkerOptions();
+//
+//                    mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+//                    String current_uid = mCurrentUser.getUid();
+//
+//                    String friendname = dataSnapshot.child(Friendinfo).child("name").getValue().toString();
+//                    String image = dataSnapshot.child(Friendinfo).child("thumb_image").getValue().toString();
+//                    markerOptions.title(dataSnapshot.child(Friendinfo).child("name").getValue().toString());
+//
+//                    LatLng FriendLatLng = new LatLng(Double.parseDouble(dataSnapshot.child(Friendinfo).child("position").child("latitude").getValue().toString()), Double.parseDouble(dataSnapshot.child(Friendinfo).child("position").child("longitude").getValue().toString()));
+//
+//                    mfriendsMarker = mMap.addMarker(new MarkerOptions().position(FriendLatLng).title(dataSnapshot.child(Friendinfo).child("name").getValue().toString()));
+//                    PicassoMarker friendMarker = new PicassoMarker(mfriendsMarker);
+//                    Picasso.with(MapsActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE).resize(300, 300).transform(new CircleTransform()).into(friendMarker);
+//
+//
+//                } else {
+//
+//                    MarkerOptions markerOptions = new MarkerOptions();
+//
+//
+//                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+//
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//
+
+        /////----------Friend ----------------------//////////
 
 
         if (client != null) {

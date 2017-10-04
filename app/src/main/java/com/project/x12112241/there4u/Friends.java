@@ -8,14 +8,26 @@ import android.os.Bundle;
 public class Friends {
 
     public String date;
+    public Double location;
 
     public Friends() {
 
     }
 
-    public Friends(String date) {
+    public Friends(String date, Double location) {
         this.date = date;
+        this.location = location;
     }
+
+    public Double getLocation() {
+        return location;
+    }
+
+    public void setLocation(Double location) {
+        this.location = location;
+    }
+
+
 
     public String getDate() {
         return date;
